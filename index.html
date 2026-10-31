@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#15212b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tolerans">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="ikon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+</head>
+<body>
+<title>Tolerans Alıştırması</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>body{margin:0}[hidden]{display:none!important}
+
+/* Düzen: tek sütunlu çalışma alanı; üstte sekmeler, ortada soru kartı, ayarlar ve veri tablosu ayrı görünümler */
+:root{
+  --zemin:#eef1f3; --yuzey:#ffffff; --yuzey2:#f6f8f9; --cizgi:#d3d9de;
+  --metin:#15212b; --soluk:#5b6873; --vurgu:#b5700c; --vurgu-zemin:#fbefdc;
+  --dogru:#1d7a46; --dogru-zemin:#e2f3e8; --yanlis:#b3261e; --yanlis-zemin:#fbe4e1;
+  --odak:#2f6fae;
+  --f-baslik:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-govde:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-veri:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --zemin:#0f161c; --yuzey:#16212a; --yuzey2:#1b2832; --cizgi:#2b3a46;
+  --metin:#e3e9ee; --soluk:#93a2ae; --vurgu:#f0a63a; --vurgu-zemin:#3a2a12;
+  --dogru:#5cc98a; --dogru-zemin:#163626; --yanlis:#f08277; --yanlis-zemin:#3d1a17; --odak:#7db4ea; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --zemin:#0f161c; --yuzey:#16212a; --yuzey2:#1b2832; --cizgi:#2b3a46;
+  --metin:#e3e9ee; --soluk:#93a2ae; --vurgu:#f0a63a; --vurgu-zemin:#3a2a12;
+  --dogru:#5cc98a; --dogru-zemin:#163626; --yanlis:#f08277; --yanlis-zemin:#3d1a17; --odak:#7db4ea; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--zemin);color:var(--metin);font-family:var(--f-govde);font-size:15px;line-height:1.5}
+.kap{max-width:820px;margin:0 auto;padding-block:20px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:18px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;border-bottom:2px solid var(--metin);padding-bottom:10px}
+h1{font-family:var(--f-baslik);font-weight:700;font-size:1.7rem;letter-spacing:.01em;margin:0;line-height:1.1;text-wrap:balance}
+h1 small{display:block;font-family:var(--f-veri);font-weight:400;font-size:.72rem;color:var(--soluk);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+nav{display:flex;gap:4px}
+nav button{font-family:var(--f-baslik);font-weight:600;font-size:.95rem;letter-spacing:.04em;text-transform:uppercase;background:none;border:1px solid transparent;color:var(--soluk);padding:6px 12px;border-radius:4px;cursor:pointer}
+nav button[aria-selected="true"]{color:var(--metin);border-color:var(--cizgi);background:var(--yuzey)}
+button:focus-visible,input:focus-visible,select:focus-visible,label:focus-within{outline:2px solid var(--odak);outline-offset:2px}
+h2{font-family:var(--f-baslik);font-weight:600;font-size:1.15rem;margin:0 0 8px;letter-spacing:.02em}
+.etiket{font-family:var(--f-veri);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--soluk)}
+.panel{background:var(--yuzey);border:1px solid var(--cizgi);border-radius:6px;padding:18px}
+.izgara{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+fieldset{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:6px;min-width:0}
+legend{padding:0;margin-bottom:6px}
+.sec{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:4px;cursor:pointer}
+.sec:hover{background:var(--yuzey2)}
+.sec input{accent-color:var(--vurgu);width:16px;height:16px;margin:0}
+.sec .say{margin-left:auto;font-family:var(--f-veri);font-size:.78rem;color:var(--soluk)}
+.satir{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+select,input[type=number],input[type=search]{font:inherit;color:var(--metin);background:var(--yuzey2);border:1px solid var(--cizgi);border-radius:4px;padding:6px 8px}
+input[type=number]{width:110px;font-family:var(--f-veri)}
+.btn{font-family:var(--f-baslik);font-weight:600;font-size:1rem;letter-spacing:.03em;border-radius:4px;padding:9px 18px;cursor:pointer;border:1px solid var(--metin);background:var(--metin);color:var(--zemin)}
+.btn.ikincil{background:transparent;color:var(--metin);border-color:var(--cizgi)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.not{font-size:.85rem;color:var(--soluk);margin:0}
+/* Soru */
+.ust{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center}
+.ilerleme{height:4px;background:var(--cizgi);border-radius:2px;overflow:hidden}
+.ilerleme i{display:block;height:100%;background:var(--vurgu);width:0;transition:width .25s}
+.cipler{display:flex;flex-wrap:wrap;gap:6px}
+.cip{font-family:var(--f-veri);font-size:.74rem;padding:2px 8px;border-radius:3px;border:1px solid var(--cizgi);color:var(--soluk);background:var(--yuzey2)}
+.cip.tesis{color:var(--metin);border-color:var(--vurgu);background:var(--vurgu-zemin)}
+.soru{font-family:var(--f-govde);font-weight:500;font-size:1.15rem;line-height:1.45;margin:12px 0 16px;text-wrap:pretty}
+.soru b{font-weight:600}
+.secenekler{display:flex;flex-direction:column;gap:8px}
+.secenek{display:flex;gap:12px;align-items:flex-start;text-align:left;font:inherit;color:var(--metin);background:var(--yuzey2);border:1px solid var(--cizgi);border-radius:5px;padding:11px 14px;cursor:pointer;width:100%}
+.secenek:hover:not(:disabled){border-color:var(--metin)}
+.secenek .harf{font-family:var(--f-veri);font-weight:500;color:var(--soluk);min-width:1.2em}
+.secenek .deg{font-family:var(--f-veri);font-size:.98rem;min-width:0;overflow-wrap:anywhere}
+.secenek.metinli .deg{font-family:var(--f-govde)}
+.secenek:disabled{cursor:default}
+.secenek.dogru{border-color:var(--dogru);background:var(--dogru-zemin)}
+.secenek.yanlis{border-color:var(--yanlis);background:var(--yanlis-zemin)}
+.donut{margin-top:16px;border-top:1px dashed var(--cizgi);padding-top:14px;display:flex;flex-direction:column;gap:8px}
+.durum{font-family:var(--f-baslik);font-weight:700;font-size:1.05rem;letter-spacing:.03em}
+.durum.d{color:var(--dogru)} .durum.y{color:var(--yanlis)}
+.kaynak{display:grid;grid-template-columns:max-content 1fr;gap:4px 12px;font-size:.88rem}
+.kaynak dt{color:var(--soluk)} .kaynak dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.kaynak .en{font-family:var(--f-veri);font-size:.8rem}
+.alt{display:flex;justify-content:flex-end;gap:10px;margin-top:14px;flex-wrap:wrap}
+/* Sonuç */
+.skor{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px}
+.skor .buyuk{font-family:var(--f-baslik);font-weight:700;font-size:3rem;line-height:1}
+.tablo-kap{overflow-x:auto;border:1px solid var(--cizgi);border-radius:6px;background:var(--yuzey)}
+table{border-collapse:collapse;width:100%;font-size:.86rem}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--cizgi);vertical-align:top}
+th{font-family:var(--f-veri);font-weight:500;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--soluk);background:var(--yuzey2);position:sticky;top:0}
+td.mono{font-family:var(--f-veri);white-space:nowrap;font-variant-numeric:tabular-nums}
+.cubuk{height:8px;background:var(--cizgi);border-radius:2px;min-width:60px;overflow:hidden}
+.cubuk i{display:block;height:100%;background:var(--dogru)}
+.yanlis-liste{display:flex;flex-direction:column;gap:10px}
+.yanlis-liste li{list-style:none;border-left:3px solid var(--yanlis);padding:4px 0 4px 12px}
+.yanlis-liste ul{padding:0;margin:0}
+footer{font-size:.8rem;color:var(--soluk);border-top:1px solid var(--cizgi);padding-top:10px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<div class="kap">
+  <header>
+    <h1><small>FAA Order 8200.1D CHG 2</small>Tolerans Alıştırması</h1>
+    <nav role="tablist">
+      <button id="sek-ayar" role="tab" aria-selected="true" data-g="ayar">Alıştırma</button>
+      <button id="sek-veri" role="tab" aria-selected="false" data-g="veri">Tolerans tablosu</button>
+    </nav>
+  </header>
+
+  <!-- AYARLAR -->
+  <section id="g-ayar">
+    <div class="panel" style="display:flex;flex-direction:column;gap:18px">
+      <div class="izgara">
+        <fieldset id="f-grup"><legend class="etiket">Tesisler</legend></fieldset>
+        <fieldset id="f-tur"><legend class="etiket">Soru türleri</legend></fieldset>
+      </div>
+      <div class="izgara">
+        <fieldset><legend class="etiket">Kontrol türü</legend>
+          <select id="kontrol">
+            <option value="hepsi">Tümü (C ve P)</option>
+            <option value="C">Hizmete alma / C</option>
+            <option value="P">Periyodik / P</option>
+          </select>
+        </fieldset>
+        <fieldset><legend class="etiket">Oturum</legend>
+          <div class="satir">
+            <label for="adet">Soru sayısı</label>
+            <select id="adet"><option>10</option><option selected>20</option><option>40</option><option value="0">Tümü</option></select>
+          </div>
+          <div class="satir">
+            <label for="tohum">Oturum no</label>
+            <input type="number" id="tohum" min="1" max="999999">
+          </div>
+          <p class="not">Aynı oturum no ve ayarlar, aynı soruları aynı sırayla üretir.</p>
+        </fieldset>
+      </div>
+      <div class="satir" style="justify-content:space-between">
+        <p class="not" id="havuz"></p>
+        <button class="btn" id="basla">Alıştırmayı başlat</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SORU -->
+  <section id="g-soru" hidden>
+    <div class="panel">
+      <div class="ust">
+        <span class="etiket" id="sayac"></span>
+        <span class="etiket" id="puan"></span>
+      </div>
+      <div class="ilerleme" style="margin-top:8px"><i id="cubuk"></i></div>
+      <div style="margin-top:14px" class="cipler" id="cipler"></div>
+      <p class="soru" id="soru"></p>
+      <div class="secenekler" id="secenekler"></div>
+      <div class="donut" id="donut" hidden></div>
+      <div class="alt">
+        <button class="btn ikincil" id="bitir">Bitir</button>
+        <button class="btn" id="sonraki" disabled>Sonraki</button>
+      </div>
+    </div>
+    <p class="not" style="margin-top:8px">Klavye: 1–4 ya da A–D ile seç, Enter ile ilerle.</p>
+  </section>
+
+  <!-- SONUÇ -->
+  <section id="g-sonuc" hidden>
+    <div class="panel" style="display:flex;flex-direction:column;gap:16px">
+      <div class="skor"><span class="buyuk" id="s-oran"></span><span id="s-ozet"></span></div>
+      <div class="tablo-kap"><table><thead><tr><th>Tesis grubu</th><th>Doğru</th><th style="width:40%">Başarı</th></tr></thead><tbody id="s-grup"></tbody></table></div>
+      <div id="s-yanlis"></div>
+      <div class="satir" style="justify-content:flex-end">
+        <button class="btn ikincil" id="yeni">Ayarlara dön</button>
+        <button class="btn" id="tekrar">Yanlışları yeniden sor</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- VERİ -->
+  <section id="g-veri" hidden>
+    <div class="satir" style="margin-bottom:10px;justify-content:space-between">
+      <input type="search" id="ara" placeholder="Ara: tesis, parametre, paragraf…" style="flex:1;min-width:0">
+      <span class="etiket" id="v-say"></span>
+    </div>
+    <div class="tablo-kap" style="max-height:70vh">
+      <table><thead><tr><th>Tesis</th><th>Parametre</th><th>Tolerans</th><th>C/P</th><th>Tablo</th><th>Paragraf</th></tr></thead><tbody id="v-govde"></tbody></table>
+    </div>
+  </section>
+
+  <footer>Kaynak: FAA Order 8200.1D, United States Standard Flight Inspection Manual (CHG 1–2). Sorular, doğru cevaplar ve çeldiriciler bu tablodan kurallarla üretilir; yapay zekâ kullanılmaz. Bu sayfa eğitim içindir; resmî değerlendirmede asıl belgeye bakın.</footer>
+</div>
+
+<script id="veri" type="application/json">[{"tesis": "TACAN", "tablo": "11.21.b", "ref": "11.9", "kontrol": "CP", "parametre": "Mesafe doğruluğu", "tip": "max", "birim": "NM", "kosul": "", "aile": "mesafe_dogrulugu", "en": "Distance Accuracy", "deger": 0.2, "id": 1, "baglam": ""}, {"tesis": "TACAN", "tablo": "11.21.b", "ref": "11.5.e", "kontrol": "CP", "parametre": "Polarizasyon (yatay polarizasyonun yol açtığı kurs sapması)", "tip": "pm", "birim": "°", "kosul": "", "aile": "polarizasyon", "en": "Polarization", "deger": 2.0, "id": 2, "baglam": ""}, {"tesis": "TACAN", "tablo": "11.21.b", "ref": "11.4.a", "kontrol": "CP", "parametre": "Yaklaşma radyali hizalaması", "tip": "pm", "birim": "°", "kosul": "doğru manyetik azimuta göre", "aile": "radyal_hizalama", "en": "Alignment of approach radials", "deger": 2.0, "id": 3, "baglam": ""}, {"tesis": "TACAN", "tablo": "11.21.b", "ref": "11.4.a", "kontrol": "CP", "parametre": "Elektronik radyal hizalaması (en route)", "tip": "pm", "birim": "°", "kosul": "doğru manyetik azimuta göre", "aile": "radyal_hizalama", "en": "Alignment of all electronic radials", "deger": 2.5, "id": 4, "baglam": ""}, {"tesis": "TACAN", "tablo": "11.21.b", "ref": "11.6", "kontrol": "CP", "parametre": "Bükülmelerden kaynaklanan kurs sapması (bends)", "tip": "max", "birim": "°", "kosul": "doğru manyetik azimuttan ve ortalama elektronik radyalden", "aile": "bends", "en": "Bends", "deger": 3.5, "id": 5, "baglam": ""}, {"tesis": "TACAN", "tablo": "11.21.b", "ref": "11.6", "kontrol": "CP", "parametre": "Yapı: kabul edilen sapmaların başladığı eşik (roughness/scalloping)", "tip": "min", "birim": "°", "kosul": "bu değerden büyük sapmalar, toplam alan sınırı aşılmazsa kabul edilir", "aile": "yapi_esik", "en": "Deviations greater than 3.0° acceptable provided aggregate...", "deger": 3.0, "id": 6, "baglam": ""}, {"tesis": "TACAN", "tablo": "11.21.b", "ref": "11.6", "kontrol": "CP", "parametre": "Yapı toplam alanı: FAF–MAP arası, herhangi 1,0 NM'lik kesitte", "tip": "max", "birim": "NM", "kosul": "", "aile": "yapi_toplam", "en": "0.05 nm in any 1.0 nm segment FAF to MAP", "deger": 0.05, "id": 7, "baglam": ""}, {"tesis": "TACAN", "tablo": "11.21.b", "ref": "11.6", "kontrol": "CP", "parametre": "Yapı toplam alanı: deniz seviyesi–10.000 ft MSL, herhangi 5 NM'lik kesitte", "tip": "max", "birim": "NM", "kosul": "", "aile": "yapi_toplam", "en": "0.25 nm in any 5 nm segment", "deger": 0.25, "id": 8, "baglam": ""}, {"tesis": "TACAN", "tablo": "11.21.b", "ref": "11.6", "kontrol": "CP", "parametre": "Yapı toplam alanı: 10.001–20.000 ft MSL, herhangi 10 NM'lik kesitte", "tip": "max", "birim": "NM", "kosul": "", "aile": "yapi_toplam", "en": "0.5 nm in any 10 nm segment", "deger": 0.5, "id": 9, "baglam": ""}, {"tesis": "TACAN", "tablo": "11.21.b", "ref": "11.6", "kontrol": "CP", "parametre": "Yapı toplam alanı: 20.000 ft MSL üzeri, herhangi 20 NM'lik kesitte", "tip": "max", "birim": "NM", "kosul": "", "aile": "yapi_toplam", "en": "1.0 nm in any 20 nm segment", "deger": 1.0, "id": 10, "baglam": ""}, {"tesis": "TACAN", "tablo": "11.21.b", "ref": "11.6", "kontrol": "CP", "parametre": "En route radyal: azimut kilit kaybı (unlock), 5 NM'lik kesitte tek olay", "tip": "max", "birim": "NM", "kosul": "", "aile": "unlock", "en": "azimuth unlock not to exceed 1 nm in a 5 nm segment", "deger": 1, "id": 11, "baglam": ""}, {"tesis": "TACAN", "tablo": "11.21.b", "ref": "11.6", "kontrol": "CP", "parametre": "En route radyal: mesafe kilit kaybı (unlock), 5 NM'lik kesitte tek olay", "tip": "max", "birim": "NM", "kosul": "", "aile": "unlock", "en": "distance unlock not to exceed 0.5 nm in a 5 nm segment", "deger": 0.5, "id": 12, "baglam": ""}, {"tesis": "TACAN", "tablo": "11.21.b", "ref": "11.6", "kontrol": "CP", "parametre": "10 DME veya daha büyük ark: prosedürel radyalin her iki yanında kilit kaybına izin verilmeyen açı", "tip": "esit", "birim": "°", "kosul": "", "aile": "unlock_aci", "en": "no unlock 5.0° either side of any radial", "deger": 5.0, "id": 13, "baglam": ""}, {"tesis": "TACAN", "tablo": "11.21.b", "ref": "11.7", "kontrol": "CP", "parametre": "Beklenen asgari sinyal şiddeti", "tip": "min", "birim": "dBm", "kosul": "", "aile": "sinyal", "en": "Signal Strength -80 dbm", "deger": -80, "id": 14, "baglam": ""}, {"tesis": "TACAN", "tablo": "11.21.b", "ref": "11.4.h", "kontrol": "CP", "parametre": "Alıcı kontrol noktası azimut hizalaması", "tip": "pm", "birim": "°", "kosul": "yayımlanan azimuta göre", "aile": "kontrol_noktasi_aci", "en": "Receiver Checkpoints", "deger": 1.5, "id": 15, "baglam": ""}, {"tesis": "TACAN", "tablo": "11.21.b", "ref": "11.4.h", "kontrol": "CP", "parametre": "Alıcı kontrol noktası mesafesi", "tip": "max", "birim": "NM", "kosul": "ölçülen mesafeye göre", "aile": "kontrol_noktasi_mesafe", "en": "Receiver Checkpoints distance", "deger": 0.2, "id": 16, "baglam": ""}, {"tesis": "TACAN", "tablo": "11.21.b", "ref": "11.4.b", "kontrol": "", "parametre": "Verici azimut monitör referansı", "tip": "pm", "birim": "°", "kosul": "", "aile": "monitor", "en": "Monitor", "deger": 1.0, "id": 17, "baglam": ""}, {"tesis": "TACAN", "tablo": "11.21.b", "ref": "11.4.i", "kontrol": "CP", "parametre": "Yedek ekipman: iki vericinin kurs hizalama farkı", "tip": "pm", "birim": "°", "kosul": "", "aile": "yedek_fark", "en": "Standby Equipment alignment difference", "deger": 1.5, "id": 18, "baglam": ""}, {"tesis": "TACAN", "tablo": "11.21.b", "ref": "11.4.i", "kontrol": "CP", "parametre": "Yedek ekipman: iki verici arası mesafe farkı", "tip": "max", "birim": "NM", "kosul": "", "aile": "yedek_fark_mesafe", "en": "Distance differential between transmitters", "deger": 0.2, "id": 19, "baglam": ""}, {"tesis": "TACAN", "tablo": "11.21.b", "ref": "11.4.f", "kontrol": "P", "parametre": "Orbital hizalama (aşılırsa bakım bilgilendirilir)", "tip": "pm", "birim": "°", "kosul": "referansa göre", "aile": "orbital", "en": "Orbital Alignment", "deger": 1, "id": 20, "baglam": ""}, {"tesis": "DME", "tablo": "11.21.c", "ref": "11.10", "kontrol": "CP", "parametre": "Mesafe doğruluğu", "tip": "max", "birim": "NM", "kosul": "", "aile": "mesafe_dogrulugu", "en": "Distance Accuracy", "deger": 0.2, "id": 21, "baglam": ""}, {"tesis": "DME", "tablo": "11.21.c", "ref": "11.7", "kontrol": "CP", "parametre": "Beklenen asgari sinyal şiddeti", "tip": "min", "birim": "dBm", "kosul": "", "aile": "sinyal", "en": "Signal Strength", "deger": -80, "id": 22, "baglam": ""}, {"tesis": "DME", "tablo": "11.21.c", "ref": "11.4.h", "kontrol": "CP", "parametre": "Alıcı kontrol noktası mesafesi", "tip": "max", "birim": "NM", "kosul": "ölçülen mesafeye göre", "aile": "kontrol_noktasi_mesafe", "en": "Receiver Checkpoints", "deger": 0.2, "id": 23, "baglam": ""}, {"tesis": "DME", "tablo": "11.21.c", "ref": "11.8", "kontrol": "CP", "parametre": "En route radyal: mesafe kilit kaybı (unlock), 5 NM'lik kesitte tek olay", "tip": "max", "birim": "NM", "kosul": "", "aile": "unlock", "en": "Coverage, en route unlock", "deger": 0.5, "id": 24, "baglam": ""}, {"tesis": "Gemi TACAN", "tablo": "11.16", "ref": "11.21.b", "kontrol": "CP", "parametre": "Yaklaşma radyali hizalaması (Bölüm 11 toleransları uygun olduğu ölçüde uygulanır)", "tip": "pm", "birim": "°", "kosul": "", "aile": "radyal_hizalama", "en": "11.16: tolerance in this chapter applies as appropriate", "deger": 2.0, "id": 25, "baglam": ""}, {"tesis": "Gemi TACAN", "tablo": "11.16", "ref": "11.21.b", "kontrol": "CP", "parametre": "Mesafe doğruluğu (Bölüm 11 toleransları uygun olduğu ölçüde uygulanır)", "tip": "max", "birim": "NM", "kosul": "", "aile": "mesafe_dogrulugu", "en": "11.16", "deger": 0.2, "id": 26, "baglam": ""}, {"tesis": "NDB", "tablo": "12.6.c", "ref": "12.6.c", "kontrol": "CP", "parametre": "Asgari kullanılabilir mesafe: Compass Locator", "tip": "min", "birim": "NM", "kosul": "", "aile": "ndb_mesafe", "en": "Compass Locator 15 nm", "deger": 15, "id": 27, "baglam": ""}, {"tesis": "NDB", "tablo": "12.6.c", "ref": "12.6.c", "kontrol": "CP", "parametre": "Asgari kullanılabilir mesafe: MH sınıfı", "tip": "min", "birim": "NM", "kosul": "", "aile": "ndb_mesafe", "en": "MH Facility 25 nm", "deger": 25, "id": 28, "baglam": ""}, {"tesis": "NDB", "tablo": "12.6.c", "ref": "12.6.c", "kontrol": "CP", "parametre": "Asgari kullanılabilir mesafe: H sınıfı", "tip": "min", "birim": "NM", "kosul": "", "aile": "ndb_mesafe", "en": "H Facility 50 nm", "deger": 50, "id": 29, "baglam": ""}, {"tesis": "NDB", "tablo": "12.6.c", "ref": "12.6.c", "kontrol": "CP", "parametre": "Asgari kullanılabilir mesafe: HH sınıfı", "tip": "min", "birim": "NM", "kosul": "", "aile": "ndb_mesafe", "en": "HH Facility 75 nm", "deger": 75, "id": 30, "baglam": ""}, {"tesis": "NDB", "tablo": "12.6.c", "ref": "12.6.c", "kontrol": "CP", "parametre": "Kullanılabilir mesafe içinde azami kerteriz (bearing) sapması", "tip": "pm", "birim": "°", "kosul": "toplam 20°", "aile": "ndb_sapma", "en": "Maximum bearing deviation 20° (±10°)", "deger": 10, "id": 31, "baglam": ""}, {"tesis": "NDB", "tablo": "12.6.d", "ref": "12.6.d", "kontrol": "CP", "parametre": "NDB yaklaşması: son yaklaşma kesiti ve bekleme paterninde kerteriz göstergesi sapması", "tip": "pm", "birim": "°", "kosul": "toplam 10°", "aile": "ndb_sapma", "en": "10° (±5°)", "deger": 5, "id": 32, "baglam": ""}, {"tesis": "NDB", "tablo": "12.6.e", "ref": "12.6.e", "kontrol": "CP", "parametre": "Kısa süreli tolerans dışı ibre hareketi: yaklaşmada azami süre (130 kt)", "tip": "max", "birim": "s", "kosul": "", "aile": "ndb_sure", "en": "four seconds on an approach", "deger": 4, "id": 33, "baglam": ""}, {"tesis": "NDB", "tablo": "12.6.e", "ref": "12.6.e", "kontrol": "CP", "parametre": "Kısa süreli tolerans dışı ibre hareketi: en route ve bekleme paterninde azami süre", "tip": "max", "birim": "s", "kosul": "", "aile": "ndb_sure", "en": "eight seconds en route/holding", "deger": 8, "id": 34, "baglam": ""}, {"tesis": "Gözetim radarı", "tablo": "14.10", "ref": "14.5.d", "kontrol": "CP", "parametre": "Oryantasyon (gerçek ve gösterilen azimut arasındaki azami fark)", "tip": "pm", "birim": "°", "kosul": "", "aile": "radar_azimut", "en": "Orientation ±2°", "deger": 2, "id": 35, "baglam": ""}, {"tesis": "Gözetim radarı", "tablo": "14.10", "ref": "14.5.n", "kontrol": "CP", "parametre": "İrtifa okuması (kokpitte gösterilen irtifaya göre, 29,92 inHg)", "tip": "pm", "birim": "ft", "kosul": "", "aile": "radar_irtifa", "en": "Altitude Readout ±125 ft", "deger": 125, "id": 36, "baglam": ""}, {"tesis": "Gözetim radarı", "tablo": "14.10", "ref": "14.5.j", "kontrol": "CP", "parametre": "Radar fix/harita doğruluğu (birincil radar)", "tip": "metin", "birim": "", "kosul": "", "aile": "radar_fix", "en": "Within 3% or 500 ft (1,000' ATCRBS), whichever is greater", "metin": "Uçak–anten mesafesinin %3'ü veya 500 ft (hangisi büyükse)", "celdirici": ["Uçak–anten mesafesinin %3'ü veya 1.000 ft (hangisi küçükse)", "Uçak–anten mesafesinin %2'si veya 500 ft (hangisi büyükse)", "Mesafeden bağımsız 250 ft", "Uçak–anten mesafesinin %5'i veya 300 ft (hangisi büyükse)"], "id": 37, "baglam": ""}, {"tesis": "Gözetim radarı (ATCRBS)", "tablo": "14.10", "ref": "14.5.j", "kontrol": "CP", "parametre": "Radar fix/harita doğruluğu (ATCRBS)", "tip": "metin", "birim": "", "kosul": "", "aile": "radar_fix", "en": "1,000' for ATCRBS", "metin": "Uçak–anten mesafesinin %3'ü veya 1.000 ft (hangisi büyükse)", "celdirici": ["Uçak–anten mesafesinin %3'ü veya 500 ft (hangisi büyükse)", "Uçak–anten mesafesinin %5'i veya 1.000 ft (hangisi küçükse)", "Mesafeden bağımsız 2.000 ft", "Uçak–anten mesafesinin %2'si veya 1.500 ft (hangisi büyükse)"], "id": 38, "baglam": ""}, {"tesis": "Gözetim radarı (ASR)", "tablo": "14.10", "ref": "14.5.k", "kontrol": "CP", "parametre": "ASR düz yaklaşma: MAP'te pist kenarına uzaklık", "tip": "max", "birim": "ft", "kosul": "", "aile": "radar_fix_sabit", "en": "Within 500 ft of runway edge at MAP", "deger": 500, "id": 39, "baglam": ""}, {"tesis": "Gözetim radarı (ASR)", "tablo": "14.10", "ref": "14.5.k", "kontrol": "CP", "parametre": "ASR çember (circling) yaklaşma: MAP çevresindeki yarıçap", "tip": "metin", "birim": "", "kosul": "", "aile": "radar_fix", "en": "ASR Circling Approach", "metin": "Uçak–anten mesafesinin %3'ü veya 500 ft (hangisi büyükse)", "celdirici": ["MAP'ten 500 ft sabit yarıçap", "Uçak–anten mesafesinin %3'ü veya 1.000 ft (hangisi küçükse)", "Uçak–anten mesafesinin %5'i veya 500 ft (hangisi büyükse)", "Pist kenarından 1.000 ft"], "id": 40, "baglam": ""}, {"tesis": "Gözetim radarı", "tablo": "14.10", "ref": "14.5.j", "kontrol": "CP", "parametre": "%3 kuralının 500 ft'i aştığı uçak–anten mesafesi", "tip": "min", "birim": "NM", "kosul": "", "aile": "radar_esik", "en": "3% exceeds 500 ft beyond 2.74 nm (16,667 ft)", "deger": 2.74, "id": 41, "baglam": ""}, {"tesis": "Gözetim radarı (ATCRBS)", "tablo": "14.10", "ref": "14.5.j", "kontrol": "CP", "parametre": "%3 kuralının 1.000 ft'i aştığı uçak–anten mesafesi (ATCRBS)", "tip": "min", "birim": "NM", "kosul": "", "aile": "radar_esik", "en": "5.49 nm (33,333 ft)", "deger": 5.49, "id": 42, "baglam": ""}, {"tesis": "Gözetim radarı", "tablo": "14.10", "ref": "14.5", "kontrol": "CP", "parametre": "Kullanılabilir hedef: art arda kaçırılmaması gereken tarama sayısı (bu sayıda art arda kayıp/kullanılamaz olmamalı)", "tip": "esit", "birim": "tarama", "kosul": "", "aile": "radar_tarama", "en": "not missed/unusable on three or more consecutive scans", "deger": 3, "id": 43, "baglam": ""}, {"tesis": "PAR", "tablo": "14.19", "ref": "14.17.a", "kontrol": "CP", "parametre": "Azimut kurs hizalaması (eşikte)", "tip": "max", "birim": "ft", "kosul": "pist merkez hattına göre", "aile": "par_az", "en": "30 ft referenced to runway centerline", "deger": 30, "id": 44, "baglam": ""}, {"tesis": "PAR", "tablo": "14.19", "ref": "14.17.a", "kontrol": "CP", "parametre": "Azimut kurs hizalaması (iz boyunca)", "tip": "metin", "birim": "", "kosul": "", "aile": "par_az_metin", "en": "Greater of 30 ft or 0.34°", "metin": "30 ft veya pist merkez hattından 0,34° (hangisi büyükse)", "celdirici": ["30 ft veya pist merkez hattından 0,5° (hangisi küçükse)", "50 ft veya pist merkez hattından 0,34° (hangisi büyükse)", "Mesafeden bağımsız 30 ft", "15 ft veya pist merkez hattından 0,2° (hangisi büyükse)"], "id": 45, "baglam": ""}, {"tesis": "PAR", "tablo": "14.19", "ref": "14.17.a", "kontrol": "CP", "parametre": "0,34°'nin 30 ft'i aştığı uçak–PAR mesafesi", "tip": "min", "birim": "NM", "kosul": "", "aile": "radar_esik", "en": "0.83 nm (5,055 ft)", "deger": 0.83, "id": 46, "baglam": ""}, {"tesis": "PAR", "tablo": "14.19", "ref": "14.17.d", "kontrol": "CP", "parametre": "Menzil doğruluğu (gerçek menzile göre)", "tip": "pm", "birim": "%", "kosul": "", "aile": "par_menzil", "en": "Range Accuracy ±2% of true range", "deger": 2, "id": 47, "baglam": ""}, {"tesis": "PAR", "tablo": "14.19", "ref": "14.17.e", "kontrol": "CP", "parametre": "Azimut ve yükselişte kullanılabilir mesafe (teker koyma noktasına)", "tip": "min", "birim": "NM", "kosul": "", "aile": "par_mesafe", "en": "Minimum of 7.5 nm to touchdown", "deger": 7.5, "id": 48, "baglam": ""}, {"tesis": "PAR", "tablo": "14.19", "ref": "14.17.f", "kontrol": "CP", "parametre": "Yanal kapsama (prosedürel merkez hattından)", "tip": "pm", "birim": "°", "kosul": "", "aile": "kapsama_aci", "en": "Lateral Coverage ±10°", "deger": 10, "id": 49, "baglam": ""}, {"tesis": "PAR", "tablo": "14.19", "ref": "14.17.h", "kontrol": "C", "parametre": "Süzülüş hattı açısı ve hizalaması (yayımlanan açıya göre)", "tip": "pm", "birim": "°", "kosul": "", "aile": "aci_hizalama", "en": "Glidepath Angle & Alignment C ±0.1°", "deger": 0.1, "id": 50, "baglam": "", "nominal": [2.5, 2.75, 2.8, 2.9, 3.0, 3.1, 3.2, 3.5]}, {"tesis": "PAR", "tablo": "14.19", "ref": "14.17.h", "kontrol": "P", "parametre": "Süzülüş hattı açısı ve hizalaması (yayımlanan açıya göre)", "tip": "pm", "birim": "°", "kosul": "", "aile": "aci_hizalama", "en": "Glidepath Angle & Alignment P ±0.2°", "deger": 0.2, "id": 51, "baglam": "", "nominal": [2.5, 2.75, 2.8, 2.9, 3.0, 3.1, 3.2, 3.5]}, {"tesis": "PAR", "tablo": "14.19", "ref": "14.17.j", "kontrol": "CP", "parametre": "Çakışma (PAR açısının yayımlanan ILS/GLS/LPV/VGSI açısıyla farkı)", "tip": "pm", "birim": "°", "kosul": "", "aile": "aci_hizalama", "en": "Coincidence ±0.2°", "deger": 0.2, "id": 52, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.b", "kontrol": "CP", "parametre": "Modülasyon seviyesi (15.4.b'ye göre ölçülen)", "tip": "aralik", "birim": "%", "kosul": "", "aile": "loc_mod", "en": "Modulation Level 36–44%", "alt": 36, "ust": 44, "id": 53, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.b", "kontrol": "CP", "parametre": "Hizmet hacmi boyunca modülasyon (01/01/2000 sonrası yeni tip anten)", "tip": "aralik", "birim": "%", "kosul": "", "aile": "loc_mod", "en": "30%–60% throughout the service volume", "alt": 30, "ust": 60, "id": 54, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.d", "kontrol": "C", "parametre": "Güç oranı: kurs vericisinin klirens vericisinden asgari fazlası (çift frekans)", "tip": "min", "birim": "dB", "kosul": "", "aile": "guc_orani", "en": "Power Ratio at least 10 dB", "deger": 10, "id": 55, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.f", "kontrol": "", "parametre": "Ön kurs genişliği: azami değer (LOC)", "tip": "max", "birim": "°", "kosul": "", "aile": "loc_genislik_max", "en": "Width maximum 6.0°", "deger": 6.0, "id": 56, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.f", "kontrol": "", "parametre": "Hassas yaklaşma: eşikte asgari kurs genişliği", "tip": "min", "birim": "ft", "kosul": "", "aile": "loc_genislik_ft", "en": "400 ft minimum course width at threshold", "deger": 400, "id": 57, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.f", "kontrol": "", "parametre": "CAT II ve III: eşikte uyarlanmış (tailored) kurs genişliği", "tip": "esit", "birim": "ft", "kosul": "", "aile": "loc_genislik_ft", "en": "CAT II & III tailored to 700 ft", "deger": 700, "id": 58, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.f", "kontrol": "C", "parametre": "Ön kurs genişliği (hizmete alınmış genişliğe göre)", "tip": "pm", "birim": "°", "kosul": "", "aile": "loc_genislik", "en": "±0.1° of the commissioned width", "deger": 0.1, "id": 59, "baglam": "", "nominal": [3.6, 4.0, 4.2, 4.5, 4.8, 5.0, 5.2, 5.5, 6.0]}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.f", "kontrol": "P", "parametre": "Ön kurs genişliği (hizmete alınmış genişliğe göre)", "tip": "pm", "birim": "%", "kosul": "", "aile": "loc_genislik_yuzde", "en": "Within 17% of the commissioned width", "deger": 17, "id": 60, "baglam": "", "nominal": [3.6, 4.0, 4.2, 4.5, 4.8, 5.0, 5.2, 5.5, 6.0], "yuzde": [-17, 17]}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.f", "kontrol": "P", "parametre": "Verici farkı (ön kurs): iki vericinin normal genişlik farkı", "tip": "metin", "birim": "", "kosul": "", "aile": "loc_verici_farki", "en": "0.5° or 10%, whichever is least", "metin": "0,5° veya hizmete alınmış genişliğin %10'u (hangisi küçükse)", "celdirici": ["0,5° veya hizmete alınmış genişliğin %10'u (hangisi büyükse)", "1,0° veya hizmete alınmış genişliğin %17'si (hangisi küçükse)", "0,1° veya hizmete alınmış genişliğin %5'i (hangisi küçükse)", "0,2° veya hizmete alınmış genişliğin %10'u (hangisi büyükse)"], "id": 61, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.f", "kontrol": "C", "parametre": "Arka kurs genişliği", "tip": "aralik", "birim": "°", "kosul": "", "aile": "bc_genislik", "en": "Back Course between 3.0° and 6.0°", "alt": 3.0, "ust": 6.0, "id": 62, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.f", "kontrol": "P", "parametre": "Arka kurs genişliği (normal veya monitör alarm durumunda)", "tip": "aralik", "birim": "°", "kosul": "", "aile": "bc_genislik", "en": "Between 2.49° and 7.02°", "alt": 2.49, "ust": 7.02, "id": 63, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.f", "kontrol": "CP", "parametre": "Simetri (yalnız ön kurs, tesis normalde)", "tip": "aralik", "birim": "%", "kosul": "", "aile": "simetri", "en": "Symmetry 45–55%", "alt": 45, "ust": 55, "id": 64, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.g", "kontrol": "C", "parametre": "Hizalama: ön kurs ve bağımsız izlenen arka kurs", "tip": "pm", "birim": "µA", "kosul": "tasarlanan prosedürel azimuttan", "aile": "loc_hizalama", "en": "Within ±3 µA", "deger": 3, "id": 65, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.g", "kontrol": "C", "parametre": "Hizalama: bağımsız izlenen arka kurs", "tip": "pm", "birim": "µA", "kosul": "", "aile": "loc_hizalama", "en": "±10 µA independently monitored back courses", "deger": 10, "id": 66, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.g", "kontrol": "P", "parametre": "Hizalama: CAT I", "tip": "pm", "birim": "µA", "kosul": "tasarlanan prosedürel azimuttan", "aile": "loc_hizalama", "en": "CAT I ±15 µA", "deger": 15, "id": 67, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.g", "kontrol": "P", "parametre": "Hizalama: CAT II", "tip": "pm", "birim": "µA", "kosul": "tasarlanan prosedürel azimuttan", "aile": "loc_hizalama", "en": "CAT II ±11 µA", "deger": 11, "id": 68, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.g", "kontrol": "P", "parametre": "Hizalama: CAT III", "tip": "pm", "birim": "µA", "kosul": "tasarlanan prosedürel azimuttan", "aile": "loc_hizalama", "en": "CAT III ±9 µA", "deger": 9, "id": 69, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.g", "kontrol": "P", "parametre": "Hizalama: arka kurs", "tip": "pm", "birim": "µA", "kosul": "", "aile": "loc_hizalama", "en": "Back Course ±20 µA", "deger": 20, "id": 70, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.g", "kontrol": "P", "parametre": "Monitör kontrolü sonrası referans verici hizalaması (düz yaklaşma)", "tip": "max", "birim": "µA", "kosul": "", "aile": "loc_hizalama", "en": "reference transmitter ≤3 µA", "deger": 3, "id": 71, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.g", "kontrol": "CP", "parametre": "Hizalama: ön kursa bağlı arka kurs", "tip": "pm", "birim": "µA", "kosul": "tasarlanan prosedürel azimuttan", "aile": "loc_hizalama", "en": "Designed procedural azimuth ±65 µA", "deger": 65, "id": 72, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.g", "kontrol": "CP", "parametre": "Kurs yapısı Bölge 1 (CAT I/II/III, A noktasına kadar)", "tip": "pm", "birim": "µA", "kosul": "grafik ortalama kurstan", "aile": "loc_yapi", "en": "Zone 1 ±30 µA to Point A", "deger": 30, "id": 73, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.g", "kontrol": "CP", "parametre": "Kurs yapısı Bölge 2, CAT I: B noktasındaki değer (A'da ±30'dan doğrusal azalarak)", "tip": "pm", "birim": "µA", "kosul": "", "aile": "loc_yapi", "en": "CAT I ±30 at A to ±15 at B", "deger": 15, "id": 74, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.g", "kontrol": "CP", "parametre": "Kurs yapısı Bölge 2, CAT II/III: B noktasındaki değer (A'da ±30'dan doğrusal azalarak)", "tip": "pm", "birim": "µA", "kosul": "", "aile": "loc_yapi", "en": "CAT II, III ±30 at A to ±5 at B", "deger": 5, "id": 75, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.g", "kontrol": "CP", "parametre": "Kurs yapısı Bölge 3, CAT I (B'den C noktasına)", "tip": "pm", "birim": "µA", "kosul": "", "aile": "loc_yapi", "en": "Zone 3 CAT I ±15 µA", "deger": 15, "id": 76, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.g", "kontrol": "CP", "parametre": "Kurs yapısı Bölge 3 ve 4, CAT II/III (B'den D noktasına)", "tip": "pm", "birim": "µA", "kosul": "", "aile": "loc_yapi", "en": "Zones 3&4 CAT II, III ±5 µA", "deger": 5, "id": 77, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.g", "kontrol": "CP", "parametre": "Kurs yapısı Bölge 5, CAT III: E noktasındaki değer (D'de ±5'ten doğrusal artarak)", "tip": "pm", "birim": "µA", "kosul": "", "aile": "loc_yapi", "en": "Zone 5 CAT III ±5 at D to ±10 at E", "deger": 10, "id": 78, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.g", "kontrol": "CP", "parametre": "Arka kurs yapısı Bölge 1 (A noktasına kadar)", "tip": "pm", "birim": "µA", "kosul": "grafik ortalama kurstan", "aile": "loc_yapi", "en": "Back Course Zone 1 ±40 µA", "deger": 40, "id": 79, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.g", "kontrol": "CP", "parametre": "Arka kurs yapısı Bölge 3 (B'den C noktasına)", "tip": "pm", "birim": "µA", "kosul": "", "aile": "loc_yapi", "en": "Back Course Zone 3 ±20 µA", "deger": 20, "id": 80, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.8.a", "kontrol": "CP", "parametre": "Yapı istisnası: 7.089 ft'lik kesitte kabul edilebilir toplam tolerans dışı uzunluk", "tip": "max", "birim": "ft", "kosul": "", "aile": "yapi_istisna", "en": "354 ft in a 7,089-foot segment", "deger": 354, "id": 81, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.i", "kontrol": "CP", "parametre": "Hizalama monitörü alarm sınırı: CAT I", "tip": "pm", "birim": "µA", "kosul": "", "aile": "loc_monitor", "en": "Monitor CAT I ±15 µA", "deger": 15, "id": 82, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.i", "kontrol": "CP", "parametre": "Hizalama monitörü alarm sınırı: CAT II", "tip": "pm", "birim": "µA", "kosul": "", "aile": "loc_monitor", "en": "CAT II ±11 µA", "deger": 11, "id": 83, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.i", "kontrol": "CP", "parametre": "Hizalama monitörü alarm sınırı: CAT III", "tip": "pm", "birim": "µA", "kosul": "", "aile": "loc_monitor", "en": "CAT III ±9 µA", "deger": 9, "id": 84, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.i", "kontrol": "CP", "parametre": "Genişlik monitörü: ön kurs ve bağımsız izlenen arka kurs (hizmete alınmış genişliğe göre)", "tip": "pm", "birim": "%", "kosul": "", "aile": "loc_genislik_yuzde", "en": "Not more than ±17%", "deger": 17, "id": 85, "baglam": "", "nominal": [3.6, 4.0, 4.2, 4.5, 4.8, 5.0, 5.2, 5.5, 6.0], "yuzde": [-17, 17]}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.i", "kontrol": "CP", "parametre": "Genişlik monitörü: arka kurs", "tip": "aralik", "birim": "°", "kosul": "", "aile": "bc_genislik", "en": "Back Course 2.49–7.02°", "alt": 2.49, "ust": 7.02, "id": 86, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.j", "kontrol": "C", "parametre": "RF güç (azaltılmış güçte) asgari sinyal şiddeti", "tip": "min", "birim": "µV", "kosul": "", "aile": "loc_sinyal", "en": "RF Power signal strength 5 µV", "deger": 5, "id": 87, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.j", "kontrol": "CP", "parametre": "Kapsama: asgari sinyal şiddeti", "tip": "min", "birim": "µV", "kosul": "", "aile": "loc_sinyal", "en": "Coverage signal strength 5 µV", "deger": 5, "id": 88, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.k", "kontrol": "CP", "parametre": "Klirens Sektör 1: doğrusal artışla ulaşılacak ve 10°'ye kadar korunacak değer (normal)", "tip": "min", "birim": "µA", "kosul": "", "aile": "loc_klirens", "en": "Linear increase to 175 µA then maintain to 10°", "deger": 175, "id": 89, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.k", "kontrol": "CP", "parametre": "Klirens Sektör 2 ve 3: asgari değer (normal)", "tip": "min", "birim": "µA", "kosul": "", "aile": "loc_klirens", "en": "Sector 2/3 150 µA", "deger": 150, "id": 90, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.k", "kontrol": "CP", "parametre": "Klirens: herhangi bir alarm konfigürasyonunda normaldeki değerden indirim", "tip": "esit", "birim": "µA", "kosul": "", "aile": "loc_klirens_ind", "en": "reduced 15 µA in alarm", "deger": 15, "id": 91, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.k", "kontrol": "CP", "parametre": "Klirens istisnası: Sektör 2 ve 3'te bir kadranda kabul edilen toplam ark", "tip": "max", "birim": "°", "kosul": "", "aile": "klirens_ark", "en": "aggregate not exceed 3° of arc in one quadrant", "deger": 3, "id": 92, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.k", "kontrol": "CP", "parametre": "Klirens: hiçbir sektörde altına inilemeyecek değer", "tip": "min", "birim": "µA", "kosul": "", "aile": "loc_klirens", "en": "less than 100 µA not acceptable", "deger": 100, "id": 93, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.n", "kontrol": "CP", "parametre": "Polarizasyon hatası: CAT I", "tip": "pm", "birim": "µA", "kosul": "", "aile": "loc_polar", "en": "CAT I ±15 µA", "deger": 15, "id": 94, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.n", "kontrol": "CP", "parametre": "Polarizasyon hatası: CAT II", "tip": "pm", "birim": "µA", "kosul": "", "aile": "loc_polar", "en": "CAT II ±8 µA", "deger": 8, "id": 95, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.n", "kontrol": "CP", "parametre": "Polarizasyon hatası: CAT III", "tip": "pm", "birim": "µA", "kosul": "", "aile": "loc_polar", "en": "CAT III ±5 µA", "deger": 5, "id": 96, "baglam": ""}, {"tesis": "ILS Localizer", "tablo": "15.9.a", "ref": "15.4.o", "kontrol": "CP", "parametre": "Ses modülasyonunun yol açabileceği azami kurs bozulması", "tip": "max", "birim": "µA", "kosul": "", "aile": "ses_bozulma", "en": "Voice modulation not more than 5 µA", "deger": 5, "id": 97, "baglam": ""}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.b", "kontrol": "C", "parametre": "Modülasyon seviyesi", "tip": "aralik", "birim": "%", "kosul": "", "aile": "gp_mod", "en": "78–82%", "alt": 78, "ust": 82, "id": 98, "baglam": ""}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.b", "kontrol": "P", "parametre": "Modülasyon seviyesi", "tip": "aralik", "birim": "%", "kosul": "", "aile": "gp_mod", "en": "75–85%", "alt": 75, "ust": 85, "id": 99, "baglam": ""}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.c", "kontrol": "", "parametre": "Modülasyon eşitliği (sıfır µA etrafında)", "tip": "pm", "birim": "µA", "kosul": "", "aile": "gp_mod_esitlik", "en": "Zero µA ±5 µA", "deger": 5, "id": 100, "baglam": ""}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.f", "kontrol": "C", "parametre": "Yol genişliği: 0,7° etrafında tolerans", "tip": "pm", "birim": "°", "kosul": "", "aile": "gp_genislik", "en": "0.7° ±0.05°", "deger": 0.05, "id": 101, "baglam": "", "nominal": [0.7]}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.f", "kontrol": "C", "parametre": "Yol genişliği: 0,7° etrafında tolerans (site survey, USAF test aracı)", "tip": "pm", "birim": "°", "kosul": "", "aile": "gp_genislik", "en": "0.7° ±0.1°", "deger": 0.1, "id": 102, "baglam": "", "nominal": [0.7]}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.f", "kontrol": "P", "parametre": "Yol genişliği: 0,7° etrafında tolerans", "tip": "pm", "birim": "°", "kosul": "", "aile": "gp_genislik", "en": "0.7° ±0.2°", "deger": 0.2, "id": 103, "baglam": "", "nominal": [0.7]}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.f", "kontrol": "C", "parametre": "Süzülüş hattı açısı (hizmete alınmış açıya göre)", "tip": "pm", "birim": "°", "kosul": "", "aile": "gp_aci", "en": "Angle ±0.05°", "deger": 0.05, "id": 104, "baglam": "", "nominal": [2.5, 2.75, 2.8, 2.9, 3.0, 3.1, 3.2, 3.5]}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.f", "kontrol": "P", "parametre": "Süzülüş hattı açısı (hizmete alınmış açıya göre)", "tip": "metin", "birim": "", "kosul": "", "aile": "gp_aci_yuzde", "en": "+10.0% to -7.5% of commissioned angle", "metin": "+%10,0 ile −%7,5 arası", "celdirici": ["±%10,0", "+%7,5 ile −%10,0 arası", "±%7,5", "+%5,0 ile −%5,0 arası"], "id": 105, "baglam": "", "nominal": [2.5, 2.75, 2.8, 2.9, 3.0, 3.1, 3.2, 3.5], "yuzde": [-7.5, 10]}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.f", "kontrol": "C", "parametre": "Verici farkı", "tip": "pm", "birim": "°", "kosul": "", "aile": "gp_verici", "en": "Transmitter Differential C ±0.10°", "deger": 0.1, "id": 106, "baglam": ""}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.f", "kontrol": "P", "parametre": "Verici farkı", "tip": "pm", "birim": "°", "kosul": "", "aile": "gp_verici", "en": "Transmitter Differential P ±0.20°", "deger": 0.2, "id": 107, "baglam": ""}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.j", "kontrol": "CP", "parametre": "Hizalama Bölge 3 (CAT II/III): B noktasında hizmete alınmış açı etrafında", "tip": "pm", "birim": "µA", "kosul": "", "aile": "gp_hizalama", "en": "±37.5 µA at Point B", "deger": 37.5, "id": 108, "baglam": ""}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.j", "kontrol": "CP", "parametre": "Hizalama Bölge 3 (CAT II/III): C noktasında", "tip": "pm", "birim": "µA", "kosul": "", "aile": "gp_hizalama", "en": "±48.75 µA at Point C", "deger": 48.75, "id": 109, "baglam": ""}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.j", "kontrol": "CP", "parametre": "Hizalama Bölge 3 (CAT II/III): ILS referans noktasında (RDH)", "tip": "pm", "birim": "µA", "kosul": "", "aile": "gp_hizalama", "en": "±75 µA at ILS reference datum", "deger": 75, "id": 110, "baglam": ""}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.i", "kontrol": "CP", "parametre": "Tilt: yol altı klirensi", "tip": "min", "birim": "µA", "kosul": "", "aile": "gp_klirens", "en": "Clearance Below Path 180 µA", "deger": 180, "id": 111, "baglam": ""}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.h", "kontrol": "C", "parametre": "Referans noktası yüksekliği (RDH): CAT I azami", "tip": "max", "birim": "ft", "kosul": "", "aile": "rdh", "en": "CAT I Maximum 60 ft", "deger": 60, "id": 112, "baglam": ""}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.h", "kontrol": "C", "parametre": "Referans noktası yüksekliği (RDH): CAT II ve III", "tip": "aralik", "birim": "ft", "kosul": "", "aile": "rdh", "en": "CAT II and III 50 to 60 ft", "alt": 50, "ust": 60, "id": 113, "baglam": ""}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.f", "kontrol": "CP", "parametre": "Simetri: CAT I", "tip": "aralik", "birim": "%", "kosul": "", "aile": "gp_simetri", "en": "CAT I 67–33%", "alt": 33, "ust": 67, "id": 114, "baglam": ""}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.f", "kontrol": "CP", "parametre": "Simetri: CAT II", "tip": "aralik", "birim": "%", "kosul": "", "aile": "gp_simetri", "en": "CAT II 58–33%", "alt": 33, "ust": 58, "id": 115, "baglam": ""}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.f", "kontrol": "CP", "parametre": "Simetri: CAT III", "tip": "aralik", "birim": "%", "kosul": "", "aile": "gp_simetri", "en": "CAT III 58–42%", "alt": 42, "ust": 58, "id": 116, "baglam": ""}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.f", "kontrol": "CP", "parametre": "Yol altı yapısı: 190 µA fly-up sinyalinin oluşması gereken asgari açı (hizmete alınmış açının yüzdesi)", "tip": "min", "birim": "%", "kosul": "", "aile": "gp_yuzde", "en": "at least 30% of commissioned angle", "deger": 30, "id": 117, "baglam": ""}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.g", "kontrol": "CP", "parametre": "Yol altı klirensi: normalde asgari fly-up sinyali", "tip": "min", "birim": "µA", "kosul": "", "aile": "gp_klirens", "en": "no less than 180 µA fly-up in normal", "deger": 180, "id": 118, "baglam": ""}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.g", "kontrol": "CP", "parametre": "Yol altı klirensi: herhangi bir monitör sınırı durumunda asgari fly-up sinyali", "tip": "min", "birim": "µA", "kosul": "", "aile": "gp_klirens", "en": "150 µA in monitor limit", "deger": 150, "id": 119, "baglam": ""}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.g", "kontrol": "CP", "parametre": "Yol üstü klirensi: ilk sahte yoldan önce oluşması gereken fly-down sinyali", "tip": "min", "birim": "µA", "kosul": "", "aile": "gp_klirens", "en": "150 µA fly-down prior to first false path", "deger": 150, "id": 120, "baglam": ""}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.j", "kontrol": "CP", "parametre": "Yapı Bölge 1, 2, 3 (CAT I, AFIS ile)", "tip": "pm", "birim": "µA", "kosul": "", "aile": "gp_yapi", "en": "CAT I ±30 µA", "deger": 30, "id": 121, "baglam": ""}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.j", "kontrol": "CP", "parametre": "Yapı Bölge 2 (CAT II/III): B noktasındaki değer (A'da ±30'dan doğrusal azalarak)", "tip": "pm", "birim": "µA", "kosul": "", "aile": "gp_yapi", "en": "±30 at A to ±20 at B", "deger": 20, "id": 122, "baglam": ""}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.j", "kontrol": "CP", "parametre": "Yapı Bölge 3 (CAT II/III), grafik ortalamadan", "tip": "pm", "birim": "µA", "kosul": "", "aile": "gp_yapi", "en": "Zone 3 ±20 µA", "deger": 20, "id": 123, "baglam": ""}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.8.a", "kontrol": "CP", "parametre": "Yapı istisnası: 7.089 ft'lik kesitte kabul edilebilir toplam tolerans dışı uzunluk", "tip": "max", "birim": "ft", "kosul": "", "aile": "yapi_istisna", "en": "354 ft in 7,089-foot segment", "deger": 354, "id": 124, "baglam": ""}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.8.b", "kontrol": "CP", "parametre": "Değişim/ters dönme (change/reversal): 1.500 ft'lik kesitte 1.000 ft başına", "tip": "max", "birim": "µA", "kosul": "", "aile": "gp_reversal", "en": "25 µA per 1,000 ft in a 1,500-foot segment", "deger": 25, "id": 125, "baglam": ""}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.n", "kontrol": "CP", "parametre": "Kapsama: asgari sinyal seviyesi", "tip": "min", "birim": "µV", "kosul": "", "aile": "gp_sinyal", "en": "Signal Level 15 µV", "deger": 15, "id": 126, "baglam": ""}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.n", "kontrol": "CP", "parametre": "Kapsama: asgari fly-up/fly-down sinyali", "tip": "min", "birim": "µA", "kosul": "", "aile": "gp_klirens", "en": "Fly-up/Fly-down 150 µA", "deger": 150, "id": 127, "baglam": ""}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.m", "kontrol": "CP", "parametre": "Monitör referans değeri: genişlik", "tip": "aralik", "birim": "°", "kosul": "", "aile": "gp_mon_gen", "en": "0.9° maximum, 0.5° minimum", "alt": 0.5, "ust": 0.9, "id": 128, "baglam": ""}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.m", "kontrol": "CP", "parametre": "Monitör referans değeri: açı (hizmete alınmış açıya göre)", "tip": "metin", "birim": "", "kosul": "", "aile": "gp_aci_yuzde", "en": "+10.0% to -7.5%", "metin": "+%10,0 ile −%7,5 arası", "celdirici": ["±%10,0", "+%7,5 ile −%10,0 arası", "±%5,0", "+%10,0 ile −%10,0 arası"], "id": 129, "baglam": "", "nominal": [2.5, 2.75, 2.8, 2.9, 3.0, 3.1, 3.2, 3.5], "yuzde": [-7.5, 10]}, {"tesis": "ILS Glide slope", "tablo": "15.9.b", "ref": "15.5.n", "kontrol": "C", "parametre": "RF güç: asgari sinyal seviyesi", "tip": "min", "birim": "µV", "kosul": "", "aile": "gp_sinyal", "en": "RF Power 15 µV", "deger": 15, "id": 130, "baglam": ""}, {"tesis": "ILS Marker", "tablo": "15.9.c", "ref": "15.9.c", "kontrol": "CP", "parametre": "Kapsama genişliklerinin ölçüldüğü sabit sinyal eşiği", "tip": "min", "birim": "µV", "kosul": "", "aile": "mkr_esik", "en": "1,700 µV", "deger": 1700, "id": 131, "baglam": ""}, {"tesis": "ILS Marker", "tablo": "15.9.b", "ref": "15.9.b", "kontrol": "CP", "parametre": "Outer Marker (OM) modülasyon frekansı (mavi ışık)", "tip": "esit", "birim": "Hz", "kosul": "", "aile": "mkr_hz", "en": "OM Blue 400 Hz", "deger": 400, "id": 132, "baglam": ""}, {"tesis": "ILS Marker", "tablo": "15.9.b", "ref": "15.9.b", "kontrol": "CP", "parametre": "Middle Marker (MM) modülasyon frekansı (kehribar ışık)", "tip": "esit", "birim": "Hz", "kosul": "", "aile": "mkr_hz", "en": "MM Amber 1,300 Hz", "deger": 1300, "id": 133, "baglam": ""}, {"tesis": "ILS Marker", "tablo": "15.9.b", "ref": "15.9.b", "kontrol": "CP", "parametre": "Inner Marker (IM) modülasyon frekansı (beyaz ışık)", "tip": "esit", "birim": "Hz", "kosul": "", "aile": "mkr_hz", "en": "IM White 3,000 Hz", "deger": 3000, "id": 134, "baglam": ""}, {"tesis": "ILS Marker", "tablo": "15.9.b", "ref": "15.9.b", "kontrol": "CP", "parametre": "Outer Marker (OM) ışık rengi", "tip": "metin", "birim": "", "kosul": "", "aile": "mkr_renk", "en": "OM Blue", "metin": "Mavi", "celdirici": ["Kehribar (amber)", "Beyaz", "Yeşil"], "id": 135, "baglam": ""}, {"tesis": "ILS Marker", "tablo": "15.9.b", "ref": "15.9.b", "kontrol": "CP", "parametre": "Middle Marker (MM) ışık rengi", "tip": "metin", "birim": "", "kosul": "", "aile": "mkr_renk", "en": "MM Amber", "metin": "Kehribar (amber)", "celdirici": ["Mavi", "Beyaz", "Kırmızı"], "id": 136, "baglam": ""}, {"tesis": "ILS Marker", "tablo": "15.9.b", "ref": "15.9.b", "kontrol": "CP", "parametre": "Inner Marker (IM) ve fan marker ışık rengi", "tip": "metin", "birim": "", "kosul": "", "aile": "mkr_renk", "en": "IM/FM White", "metin": "Beyaz", "celdirici": ["Mavi", "Kehribar (amber)", "Yeşil"], "id": 137, "baglam": ""}, {"tesis": "ILS Marker", "tablo": "15.9.c", "ref": "15.9.c(1)", "kontrol": "CP", "parametre": "Küçük eksen (minor axis) genişliği: Outer Marker", "tip": "aralik", "birim": "ft", "kosul": "", "aile": "mkr_minor", "en": "1,350–4,000 ft", "alt": 1350, "ust": 4000, "id": 138, "baglam": ""}, {"tesis": "ILS Marker", "tablo": "15.9.c", "ref": "15.9.c(1)", "kontrol": "CP", "parametre": "Küçük eksen genişliği: Middle Marker", "tip": "aralik", "birim": "ft", "kosul": "", "aile": "mkr_minor", "en": "675–1,325 ft", "alt": 675, "ust": 1325, "id": 139, "baglam": ""}, {"tesis": "ILS Marker", "tablo": "15.9.c", "ref": "15.9.c(1)", "kontrol": "CP", "parametre": "Küçük eksen genişliği: Inner Marker", "tip": "aralik", "birim": "ft", "kosul": "", "aile": "mkr_minor", "en": "340–660 ft", "alt": 340, "ust": 660, "id": 140, "baglam": ""}, {"tesis": "ILS Marker", "tablo": "15.9.c", "ref": "15.9.c(1)", "kontrol": "CP", "parametre": "Küçük eksen genişliği: son yaklaşmada pas geçme/step-down fiksi fan marker", "tip": "aralik", "birim": "ft", "kosul": "", "aile": "mkr_minor", "en": "1,000–3,000 ft", "alt": 1000, "ust": 3000, "id": 141, "baglam": ""}, {"tesis": "ILS Marker", "tablo": "15.9.c", "ref": "15.9.c", "kontrol": "CP", "parametre": "OM ve fan marker: kapsamadaki boşluğun (hole) izin verilen azami süresi (mesafe olarak)", "tip": "max", "birim": "ft", "kosul": "bu değerden kısa olmalı", "aile": "mkr_hole", "en": "less than 300 feet in duration", "deger": 300, "id": 142, "baglam": ""}, {"tesis": "ILS Marker", "tablo": "15.9.c", "ref": "15.9.c(2)", "kontrol": "CP", "parametre": "Büyük eksen (major axis): Outer Marker", "tip": "aralik", "birim": "ft", "kosul": "", "aile": "mkr_major", "en": "Min 700 ft, Max 4,000 ft", "alt": 700, "ust": 4000, "id": 143, "baglam": ""}, {"tesis": "ILS Marker", "tablo": "15.9.c", "ref": "15.9.c(2)", "kontrol": "CP", "parametre": "Büyük eksen: Middle Marker", "tip": "aralik", "birim": "ft", "kosul": "", "aile": "mkr_major", "en": "Min 350 ft, Max 1,325 ft", "alt": 350, "ust": 1325, "id": 144, "baglam": ""}, {"tesis": "ILS Marker", "tablo": "15.9.c", "ref": "15.9.c", "kontrol": "CP", "parametre": "Aynı yaklaşmadaki ardışık markerların 1.700 µV noktaları arasındaki asgari ayrım (örn. MM–IM)", "tip": "min", "birim": "ft", "kosul": "", "aile": "mkr_ayrim", "en": "at least 709 ft", "deger": 709, "id": 145, "baglam": ""}, {"tesis": "VGSI (PAPI/VASI)", "tablo": "7.5", "ref": "7.5.b", "kontrol": "CP", "parametre": "Olağan görsel süzülüş açısı", "tip": "esit", "birim": "°", "kosul": "", "aile": "vgsi_aci", "en": "normally 3.0°", "deger": 3.0, "id": 146, "baglam": ""}, {"tesis": "VGSI (PAPI/VASI)", "tablo": "7.5", "ref": "7.5.b", "kontrol": "CP", "parametre": "Etkin süzülüş açısının belirlenen/istenen açıdan farkı", "tip": "max", "birim": "°", "kosul": "", "aile": "aci_hizalama", "en": "within 0.20°", "deger": 0.2, "id": 147, "baglam": ""}, {"tesis": "VGSI (PAPI/VASI)", "tablo": "7.5", "ref": "7.5.b", "kontrol": "CP", "parametre": "Görsel ve elektronik süzülüş hattının çakışması gereken alan: eşikten önceki uzak sınır", "tip": "esit", "birim": "ft", "kosul": "", "aile": "vgsi_cakisma", "en": "between 6,000 ft and 1,000 ft prior to threshold", "deger": 6000, "id": 148, "baglam": ""}, {"tesis": "VGSI (PAPI/VASI)", "tablo": "7.5", "ref": "7.5.b", "kontrol": "CP", "parametre": "Görsel ve elektronik süzülüş hattının çakışması gereken alan: eşikten önceki yakın sınır", "tip": "esit", "birim": "ft", "kosul": "", "aile": "vgsi_cakisma", "en": "1,000 ft prior to threshold", "deger": 1000, "id": 149, "baglam": ""}, {"tesis": "VGSI (PAPI/VASI)", "tablo": "7.5", "ref": "7.5.b", "kontrol": "CP", "parametre": "Height Group 4 PAPI/PVASI: görsel hattın pisti, elektronik hattın kesiştiği noktadan sonra kesmesi gereken mesafe", "tip": "aralik", "birim": "ft", "kosul": "", "aile": "vgsi_hg4", "en": "300 to 350 ft past", "alt": 300, "ust": 350, "id": 150, "baglam": ""}, {"tesis": "VGSI (PAPI/VASI)", "tablo": "7.5", "ref": "7.5.c", "kontrol": "CP", "parametre": "Açısal kapsama: uzatılmış pist merkez hattının her iki yanında", "tip": "min", "birim": "°", "kosul": "", "aile": "kapsama_aci", "en": "not less than 10° either side", "deger": 10, "id": 151, "baglam": ""}, {"tesis": "Yaklaşma ve pist ışıkları", "tablo": "7.11", "ref": "7.11.a(4)", "kontrol": "CP", "parametre": "Pist merkez hattı ışıkları: çalışmayan ışık oranı (CAT II)", "tip": "max", "birim": "%", "kosul": "", "aile": "isik_oran", "en": "No more than 10% centerline lights inoperative", "deger": 10, "id": 152, "baglam": ""}, {"tesis": "Yaklaşma ve pist ışıkları", "tablo": "7.11", "ref": "7.11.a(4)", "kontrol": "CP", "parametre": "Teker koyma bölgesi ışıkları: her iki yanda çalışmayan ışık oranı (CAT II)", "tip": "max", "birim": "%", "kosul": "", "aile": "isik_oran", "en": "No more than 10% on either side TDZ", "deger": 10, "id": 153, "baglam": ""}, {"tesis": "Yaklaşma ve pist ışıkları", "tablo": "7.11", "ref": "7.11.a(4)", "kontrol": "CP", "parametre": "Pist merkez hattı ışıkları: art arda çalışmayan azami ışık sayısı", "tip": "max", "birim": "ışık", "kosul": "", "aile": "isik_sayi", "en": "No more than four consecutive lights", "deger": 4, "id": 154, "baglam": ""}, {"tesis": "Yaklaşma ve pist ışıkları", "tablo": "7.11", "ref": "7.11.a(4)", "kontrol": "CP", "parametre": "Teker koyma bölgesi: aynı tarafta çalışmayabilecek bitişik bar sayısı", "tip": "metin", "birim": "", "kosul": "", "aile": "isik_bar", "en": "two adjacent bars on the same side may not be inoperative", "metin": "Hiç (aynı tarafta iki bitişik bar çalışmaz olamaz)", "celdirici": ["En fazla iki bitişik bar", "En fazla üç bitişik bar", "Toplam barların %10'u kadar"], "id": 155, "baglam": ""}, {"tesis": "Yaklaşma ve pist ışıkları", "tablo": "7.11", "ref": "7.11.a(2)", "kontrol": "CP", "parametre": "Lamba hizalaması: yaklaşık elektronik süzülüş açısı", "tip": "esit", "birim": "°", "kosul": "", "aile": "vgsi_aci", "en": "approximately 3.0°", "deger": 3.0, "id": 156, "baglam": ""}]</script>
+<script>
+"use strict";
+const VERI = JSON.parse(document.getElementById("veri").textContent);
+
+/* ---------- Gruplar ---------- */
+const GRUPLAR = [
+  ["ILS", ["ILS Localizer","ILS Glide slope","ILS Marker"]],
+  ["TACAN ve DME", ["TACAN","DME","Gemi TACAN"]],
+  ["NDB", ["NDB","NDB / homing beacon"]],
+  ["Radar ve PAR", ["Gözetim radarı","Gözetim radarı (ATCRBS)","Gözetim radarı (ASR)","Gözetim radarı (ASR/ATCRBS)","PAR"]],
+  ["Işık sistemleri", ["VGSI (PAPI/VASI)","Yaklaşma ve pist ışıkları"]],
+];
+const grubu = t => (GRUPLAR.find(g => g[1].includes(t)) || ["Diğer"])[0];
+VERI.forEach(f => f.grup = grubu(f.tesis));
+
+const TURLER = [
+  ["karar","Tolerans içinde mi, dışında mı?"],
+  ["sinir","Alt ve üst sınır nedir?"],
+];
+const OLCUMSUZ = new Set(["yapi_esik","reil_aci","radar_esik","com_oran","unlock_aci","com_mesafe","com_irt_ft","com_isik","vgsi_cakisma"]);
+const TAMSAYI_BIRIM = new Set(["ışık","tarama","s","Hz"]);
+
+/* ---------- Biçim ---------- */
+function ondalik(v){ const s=String(v); const i=s.indexOf("."); return i<0?0:s.length-i-1; }
+function sayi(v,d){
+  if(d===undefined) d=ondalik(v);
+  let s=Math.abs(v).toFixed(d); let [t,k]=s.split(".");
+  if(t.length>=4) t=t.replace(/\B(?=(\d{3})+(?!\d))/g,".");
+  return (v<0?"−":"")+t+(k?","+k:"");
+}
+function ek(x,b){ if(b==="%") return "%"+x; if(b==="°") return x+"°"; if(!b) return x; return x+" "+b; }
+function cevap(f){
+  const b=f.birim;
+  switch(f.tip){
+    case "pm": return "±"+ek(sayi(f.deger),b);
+    case "max": return "En fazla "+ek(sayi(f.deger),b);
+    case "min": return "En az "+ek(sayi(f.deger),b);
+    case "esit": return ek(sayi(f.deger),b);
+    case "aralik": { const d=Math.max(ondalik(f.alt),ondalik(f.ust)); return ek(sayi(f.alt,d),b)+" – "+ek(sayi(f.ust,d),b); }
+    case "metin": return f.metin;
+  }
+}
+const KONTROL = {C:"Hizmete alma (C)",P:"Periyodik (P)",CP:"C ve P","":"Gerektiğinde"};
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function etiketi(f){ return f.tesis+" · "+f.parametre+(f.kosul?" ("+f.kosul+")":""); }
+
+/* ---------- Tohumlu rastgele (oturum tekrarlanabilir) ---------- */
+function mulberry(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+let R=Math.random;
+const al = a => a[Math.floor(R()*a.length)];
+const karistir = a => { a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(R()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a; };
+const ara = (x,y) => x+(y-x)*R();
+
+/* ---------- Çeldirici kuralları ---------- */
+function yuvarla(v,d){ const m=Math.pow(10,d); return Math.round(v*m)/m; }
+function sapmaDegerleri(v,b){
+  const d=ondalik(v); const c=[];
+  if(b==="dBm"){ [3,5,10,-5,-10,-13].forEach(k=>c.push(v+k)); return c; }
+  [0.5,2,1.5,0.75,1.25,3].forEach(m=>{ let x=yuvarla(v*m,d); if(d===0&&Math.abs(v)<10) x=Math.round(v*m); if(x!==v && x!==0) c.push(x); });
+  const adim=Math.pow(10,-d)*(d===0?(Math.abs(v)>=100?Math.pow(10,Math.floor(Math.log10(Math.abs(v)))-1)*5:1):1);
+  [1,-1,2].forEach(k=>{ const x=yuvarla(v+k*adim,d); if(x>0&&x!==v) c.push(x); });
+  [0.5,1.5,2.5].forEach(m=>{ const x=yuvarla(v*m,d+1); if(x!==v&&x!==0) c.push(x); });
+  return c;
+}
+function celdiriciler(f){
+  const dogru=cevap(f); const set=new Set([dogru]); const out=[];
+  const ekle=s=>{ if(s && !set.has(s) && out.length<3){ set.add(s); out.push(s); } };
+  if(f.tip==="metin"){ karistir(f.celdirici).forEach(ekle);
+    if(out.length<3) karistir(VERI.filter(g=>g.tip==="metin"&&g.aile===f.aile&&g!==f)).forEach(g=>ekle(cevap(g)));
+    return out; }
+  const havuz=VERI.filter(g=>g!==f&&g.tip===f.tip&&g.birim===f.birim&&cevap(g)!==dogru);
+  const ayni=havuz.filter(g=>g.aile===f.aile);
+  karistir(ayni.length?ayni:havuz).slice(0,2).forEach(g=>ekle(cevap(g)));
+  const kopya=o=>Object.assign({},f,o);
+  if(f.tip==="aralik"){
+    const d=Math.max(ondalik(f.alt),ondalik(f.ust)); const w=f.ust-f.alt; const yd=yuvarla(w/2,d)||Math.pow(10,-d);
+    const adaylar=[[f.alt-yd,f.ust-yd],[f.alt+yd,f.ust+yd],[yuvarla(f.alt*0.9,d),yuvarla(f.ust*1.1,d)],[yuvarla(f.alt+w*0.2,d),yuvarla(f.ust-w*0.2,d)],[yuvarla(f.alt*0.5,d),f.ust],[f.alt,yuvarla(f.ust*1.5,d)]]
+      .map(([a,b])=>[yuvarla(a,d),yuvarla(b,d)]).filter(([a,b])=>a<b&&(f.birim!=="%"||(a>=0&&b<=100))&&(a>=0||f.alt<0));
+    karistir(adaylar).forEach(([a,b])=>ekle(cevap(kopya({alt:a,ust:b}))));
+  } else {
+    const sd=sapmaDegerleri(f.deger,f.birim); const ana=sd.slice(0,sd.length-3), yedek=sd.slice(sd.length-3);
+    karistir(ana).forEach(x=>ekle(cevap(kopya({deger:x})))); yedek.forEach(x=>ekle(cevap(kopya({deger:x}))));
+  }
+  return out;
+}
+
+/* ---------- Ölçüm kuralları ---------- */
+function icinde(f,x){
+  switch(f.tip){ case "pm": return Math.abs(x)<=f.deger; case "max": return x<=f.deger; case "min": return x>=f.deger; case "aralik": return x>=f.alt&&x<=f.ust; }
+}
+function olcumUret(f,ic){
+  const ref=f.tip==="aralik"?Math.max(Math.abs(f.alt),Math.abs(f.ust)):Math.abs(f.deger);
+  let d=f.tip==="aralik"?Math.max(ondalik(f.alt),ondalik(f.ust)):ondalik(f.deger);
+  if(!TAMSAYI_BIRIM.has(f.birim) && ref<50) d+=1;
+  for(let deneme=0;deneme<40;deneme++){
+    let x; const s=R()<0.5?-1:1;
+    if(f.tip==="pm") x= ic ? s*f.deger*ara(0.15,0.9) : s*f.deger*ara(1.15,1.7);
+    else if(f.tip==="max") x= ic ? f.deger*ara(0.2,0.9) : f.deger*ara(1.15,1.8);
+    else if(f.tip==="min") x= ic ? f.deger+Math.abs(f.deger)*ara(0.1,0.8) : f.deger-Math.abs(f.deger)*ara(0.15,0.6);
+    else { const w=f.ust-f.alt; x= ic ? f.alt+w*ara(0.12,0.88) : (s<0 ? f.alt-w*ara(0.15,0.7) : f.ust+w*ara(0.15,0.7)); }
+    x=yuvarla(x,d);
+    if(f.birim==="%" && (x<0||x>100)) continue;
+    if(f.tip!=="pm" && f.tip!=="min" && x<0) continue;
+    if(x===0 && f.tip!=="pm") continue;
+    if(icinde(f,x)===ic) return x;
+  }
+  return null;
+}
+function olcumYazi(f,x,d){ const s=sayi(x,d); return ek(f.tip==="pm"&&x>0?"+"+s:s,f.birim); }
+function olcumUygun(f){ return ["pm","max","min","aralik"].includes(f.tip) && !OLCUMSUZ.has(f.aile); }
+
+/* ---------- Tezdeki biçim: sınır ve karar soruları ---------- */
+const r4 = x => Math.round(x*1e4)/1e4;
+const basamak = x => (String(r4(x)).split(".")[1]||"").length;
+const BIRIM_ONDALIK = {"%":1,"µA":0,"°":2,"ft":0,"dB":0,"dBm":0,"µV":0,"Hz":0,"s":0,"ışık":0,"tarama":0};
+function olcBirim(f){ return f.yuzde?"°":f.birim; }
+function sinirlar(f,n){
+  if(f.yuzde) return [r4(n*(1+f.yuzde[0]/100)), r4(n*(1+f.yuzde[1]/100))];
+  switch(f.tip){
+    case "pm": return n!=null ? [r4(n-f.deger), r4(n+f.deger)] : [-f.deger, f.deger];
+    case "aralik": return [f.alt, f.ust];
+    case "max": return [null, f.deger];
+    case "min": return [f.deger, null];
+  }
+  return null;
+}
+function sinirUygun(f){ return !!f.yuzde || f.tip==="pm" || f.tip==="aralik"; }
+function kararUygun(f){ return !!f.yuzde || (olcumUygun(f)); }
+function isaret(x,d,b,f){ const t=sayi(x,d); return (f.tip==="pm"&&f.nominal==null&&!f.yuzde&&x>0?"+":"")+t; }
+function ciftYaz(a,b,d,f){ const bi=olcBirim(f); const x=isaret(a,d,bi,f), y=isaret(b,d,bi,f);
+  if(bi==="%") return "%"+x+" / %"+y; if(bi==="°") return x+"° / "+y+"°"; return x+" / "+y+(bi?" "+bi:""); }
+function nominalSec(f){ return f.nominal ? al(f.nominal) : null; }
+function nominalMetni(f,n){
+  if(n==null) return "";
+  const ad=/PAR|VGSI/.test(f.tesis)&&/yayımlanan/.test(f.parametre)?"Yayımlanan açı":(/genişli/i.test(f.parametre)?"Hizmete alınmış genişlik":"Hizmete alınmış açı");
+  return ad+" <b>"+sayi(n,2)+"°</b>. ";
+}
+function hesapMetni(f,n,alt,ust,d){
+  const bi=olcBirim(f);
+  if(f.yuzde) return "Hizmete alınan değerin yüzdesi: "+sayi(n,2)+" × (1 − "+sayi(Math.abs(f.yuzde[0]))+"/100) = "+sayi(alt,d)+"; "+sayi(n,2)+" × (1 + "+sayi(f.yuzde[1])+"/100) = "+sayi(ust,d)+" °.";
+  if(f.tip==="pm"&&n!=null) return "Hizmete alınan değer ± "+sayi(f.deger)+"°: "+sayi(n,2)+" − "+sayi(f.deger)+" = "+sayi(alt,d)+"; "+sayi(n,2)+" + "+sayi(f.deger)+" = "+sayi(ust,d)+" °.";
+  if(alt==null) return "Üst sınır "+ek(sayi(ust,d),bi)+"; alt sınır yok.";
+  if(ust==null) return "Alt sınır "+ek(sayi(alt,d),bi)+"; üst sınır yok.";
+  return "Sınırlar "+ciftYaz(alt,ust,d,f)+".";
+}
+function sinirSoru(f){
+  const n=nominalSec(f); const [alt,ust]=sinirlar(f,n);
+  const d=Math.max(basamak(alt),basamak(ust),n!=null?2:0);
+  const dogru=ciftYaz(alt,ust,d,f);
+  const aday=[];
+  VERI.filter(g=>g!==f&&g.aile===f.aile&&sinirUygun(g)&&olcBirim(g)===olcBirim(f)&&(g.nominal!=null)===(n!=null)).forEach(g=>aday.push(sinirlar(g,n)));
+  const o=(alt+ust)/2, w=(ust-alt)/2;
+  const olcek=karistir([2,0.5,1.5,0.75]).concat([3,1.25]).map(c=>{const yw=yuvarla(w*c,d); return [yuvarla(o-yw,d),yuvarla(o+yw,d)];});
+  const kaydir=[[yuvarla(alt+w,d),yuvarla(ust+w,d)],[yuvarla(alt-w,d),yuvarla(ust-w,d)]];
+  const gor=new Set([dogru]); const cel=[];
+  karistir(aday).concat(olcek,kaydir).forEach(p=>{ if(cel.length>=3||!(p[1]>p[0])) return;
+    if(olcBirim(f)==="%"&&f.tip==="aralik"&&(p[0]<0||p[1]>100)) return;
+    const t=ciftYaz(p[0],p[1],d,f); if(!gor.has(t)){gor.add(t); cel.push(t);} });
+  const se=karistir([dogru,...cel]);
+  return {f,tur:"sinir",metin:nominalMetni(f,n)+"<b>"+esc(f.tesis)+"</b> · "+esc(f.parametre)+(f.kosul?" ("+esc(f.kosul)+")":"")+" için <b>alt / üst sınır</b> nedir?"+(f.baglam?" <span class=\"not\">["+esc(f.baglam)+"]</span>":""),
+    secenekler:se,dogru:se.indexOf(dogru),metinli:false,ekBilgi:hesapMetni(f,n,alt,ust,d)};
+}
+function kararSoru(f){
+  const n=nominalSec(f); const [alt,ust]=sinirlar(f,n); const bi=olcBirim(f);
+  const ref=alt!=null&&ust!=null?ust-alt:Math.abs(alt!=null?alt:ust);
+  let dd=Math.max(alt!=null?basamak(alt):0, ust!=null?basamak(ust):0, BIRIM_ONDALIK[bi]!==undefined?BIRIM_ONDALIK[bi]:(ref<10?2:1));
+  if(n!=null) dd=Math.max(dd,2);
+  const adim=Math.pow(10,-dd);
+  let asagi = alt==null?false: ust==null?true: R()<0.5;
+  const disari=R()<0.5;
+  const pay=Math.max(adim, ref*ara(0.02,0.2));
+  const sinir=asagi?alt:ust;
+  let v=disari?(asagi?sinir-pay:sinir+pay):(asagi?sinir+pay:sinir-pay);
+  v=yuvarla(v,dd);
+  const ic=x=>(alt==null||x>=alt-1e-9)&&(ust==null||x<=ust+1e-9);
+  if(disari&&ic(v)) v=yuvarla(asagi?sinir-adim:sinir+adim,dd);
+  if(!disari&&!ic(v)) v=yuvarla(asagi?sinir+adim:sinir-adim,dd);
+  const icinde=ic(v);
+  const deg=(f.tip==="pm"&&n==null&&!f.yuzde)?"Ölçülen sapma":"Ölçülen değer";
+  const vy=ek(isaret(v,dd,bi,f),bi);
+  return {f,tur:"karar",metin:nominalMetni(f,n)+"<b>"+esc(f.tesis)+"</b> · "+esc(f.parametre)+(f.kosul?" ("+esc(f.kosul)+")":"")+". "+deg+": <b>"+esc(vy)+"</b>. Bu ölçüm tolerans içinde mi?"+(f.baglam?" <span class=\"not\">["+esc(f.baglam)+"]</span>":""),
+    secenekler:["Tolerans içinde","Tolerans dışında"],dogru:icinde?0:1,metinli:true,
+    ekBilgi:hesapMetni(f,n,alt,ust,Math.max(dd,0))+" Ölçülen "+vy+(icinde?" bu sınırlar içinde.":" bu sınırların dışında.")};
+}
+
+/* ---------- Soru üretimi ---------- */
+function soruUret(f,tur){
+  if(tur==="sinir") return sinirSoru(f);
+  if(tur==="karar") return kararSoru(f);
+  const baglam=f.baglam?" <span class=\"not\">["+esc(f.baglam)+"]</span>":"";
+  if(tur==="deger"){
+    const se=karistir([cevap(f),...celdiriciler(f)]);
+    return {f,tur,metin:"<b>"+esc(f.tesis)+"</b> · "+esc(f.parametre)+(f.kosul?" ("+esc(f.kosul)+")":"")+" için tolerans/sınır nedir?"+baglam,
+      secenekler:se, dogru:se.indexOf(cevap(f)), metinli:f.tip==="metin"};
+  }
+  if(tur==="olcum"){
+    const disSor=R()<0.6; const deg=[]; const tek=olcumUret(f,!disSor); if(tek===null) return null;
+    deg.push(tek); let g=0;
+    while(deg.length<4 && g++<60){ const x=olcumUret(f,disSor); if(x!==null && !deg.includes(x)) deg.push(x); }
+    if(deg.length<4) return null;
+    const ref=f.tip==="aralik"?Math.max(Math.abs(f.alt),Math.abs(f.ust)):Math.abs(f.deger);
+    let d=f.tip==="aralik"?Math.max(ondalik(f.alt),ondalik(f.ust)):ondalik(f.deger);
+    if(!TAMSAYI_BIRIM.has(f.birim) && ref<50) d+=1;
+    const yazilar=deg.map(x=>olcumYazi(f,x,d)); const sira=karistir([0,1,2,3]);
+    const ne=f.tip==="pm"?"ölçülen sapmalardan":"ölçülen değerlerden";
+    return {f,tur,metin:"<b>"+esc(f.tesis)+"</b> · "+esc(f.parametre)+(f.kosul?" ("+esc(f.kosul)+")":"")+". Aşağıdaki "+ne+" hangisi tolerans <b>"+(disSor?"dışındadır":"içindedir")+"</b>?"+baglam,
+      secenekler:sira.map(i=>yazilar[i]), dogru:sira.indexOf(0), metinli:false, ekBilgi:"Tolerans: "+cevap(f)};
+  }
+  if(tur==="ters"){
+    const dogru=cevap(f);
+    let havuz=VERI.filter(g=>g!==f&&cevap(g)!==dogru&&etiketi(g)!==etiketi(f)&&!(g.tesis===f.tesis&&g.parametre===f.parametre));
+    const ayni=havuz.filter(g=>g.birim===f.birim&&g.grup===f.grup);
+    const sec=karistir(ayni.length>=3?ayni:havuz.filter(g=>g.birim===f.birim).length>=3?havuz.filter(g=>g.birim===f.birim):havuz).slice(0,3);
+    const lab=g=>etiketi(g)+" — "+KONTROL[g.kontrol]+(g.baglam?" · Böl. 24":"");
+    const tum=karistir([f,...sec]);
+    return {f,tur,metin:"Toleransı/sınırı <b>"+esc(dogru)+"</b> olan parametre hangisidir?",
+      secenekler:tum.map(lab), dogru:tum.indexOf(f), metinli:true};
+  }
+  if(tur==="paragraf"){
+    const yasak=new Set([f.ref,f.tablo]); const bolum=f.ref.split(".")[0];
+    const refler=[...new Set(VERI.map(g=>g.ref))].filter(r=>!yasak.has(r)&&/^\d|^F/.test(r));
+    const ayni=refler.filter(r=>r.split(".")[0]===bolum);
+    const sec=karistir(ayni.length>=3?ayni:refler).slice(0,3);
+    const tum=karistir([f.ref,...sec]);
+    return {f,tur,metin:"<b>"+esc(f.tesis)+"</b> · "+esc(f.parametre)+" toleransının referans paragrafı hangisidir?"+baglam,
+      secenekler:tum.map(r=>"Paragraf "+r), dogru:tum.indexOf(f.ref), metinli:false};
+  }
+}
+function turUygun(f,t){ return t==="olcum"?olcumUygun(f):t==="ters"?f.tip!=="metin":t==="sinir"?sinirUygun(f):t==="karar"?kararUygun(f):true; }
+
+/* ---------- Durum ---------- */
+const $=id=>document.getElementById(id);
+let OT=null;
+
+function ayarlar(){
+  return { gruplar:[...document.querySelectorAll("#f-grup input:checked")].map(i=>i.value),
+    turler:[...document.querySelectorAll("#f-tur input:checked")].map(i=>i.value),
+    kontrol:$("kontrol").value, b24:false, adet:+$("adet").value, tohum:+$("tohum").value||1 };
+}
+function filtrele(a){
+  return VERI.filter(f=>a.gruplar.includes(f.grup) && (a.b24||!f.baglam) &&
+    (a.kontrol==="hepsi" || f.kontrol==="CP" || f.kontrol===a.kontrol || f.kontrol===""));
+}
+function havuzYaz(){
+  const a=ayarlar(); const n=filtrele(a).filter(f=>a.turler.some(t=>turUygun(f,t))).length;
+  $("havuz").textContent=n+" tolerans satırı seçili";
+  $("basla").disabled=!n||!a.turler.length;
+  try{ localStorage.setItem("tolerans_ayar4",JSON.stringify(a)); }catch(e){}
+}
+function kur(){
+  GRUPLAR.forEach(([g])=>{ const n=VERI.filter(f=>f.grup===g&&TURLER.some(([t])=>turUygun(f,t))).length;
+    $("f-grup").insertAdjacentHTML("beforeend",`<label class="sec"><input type="checkbox" value="${esc(g)}" checked> ${esc(g)}<span class="say">${n}</span></label>`); });
+  TURLER.forEach(([k,ad],i)=>$("f-tur").insertAdjacentHTML("beforeend",`<label class="sec"><input type="checkbox" value="${k}" ${i<2?"checked":""}> ${esc(ad)}</label>`));
+  let kayit=null; try{ kayit=JSON.parse(localStorage.getItem("tolerans_ayar4")); }catch(e){}
+  if(kayit){
+    document.querySelectorAll("#f-grup input").forEach(i=>i.checked=kayit.gruplar.includes(i.value));
+    document.querySelectorAll("#f-tur input").forEach(i=>i.checked=kayit.turler.includes(i.value));
+    $("kontrol").value=kayit.kontrol; $("adet").value=String(kayit.adet);
+  }
+  $("tohum").value=Math.floor(Math.random()*900000)+100000;
+  document.querySelectorAll("#g-ayar input,#g-ayar select").forEach(e=>e.addEventListener("change",havuzYaz));
+  havuzYaz(); veriYaz();
+}
+
+function baslat(liste){
+  const a=ayarlar(); R=mulberry(a.tohum);
+  let olgular=liste||karistir(filtrele(a).filter(f=>a.turler.some(t=>turUygun(f,t))));
+  if(!liste && a.adet) olgular=olgular.slice(0,a.adet);
+  const sorular=[];
+  olgular.forEach((f,i)=>{
+    const uygun=a.turler.filter(t=>turUygun(f,t));
+    const sira=karistir(uygun);
+    for(const t of sira){ const s=soruUret(f,t); if(s){ sorular.push(s); break; } }
+  });
+  OT={sorular,i:0,dogru:0,cevaplar:[],tohum:a.tohum};
+  goster("soru"); soruGoster();
+}
+function goster(g){
+  ["ayar","soru","sonuc","veri"].forEach(x=>$("g-"+x).hidden=x!==g);
+  $("sek-ayar").setAttribute("aria-selected",String(g!=="veri"));
+  $("sek-veri").setAttribute("aria-selected",String(g==="veri"));
+}
+function soruGoster(){
+  const s=OT.sorular[OT.i]; const n=OT.sorular.length;
+  $("sayac").textContent=`Soru ${OT.i+1} / ${n} · Oturum ${OT.tohum}`;
+  $("puan").textContent=`${OT.dogru} doğru`;
+  $("cubuk").style.width=(OT.i/n*100)+"%";
+  $("cipler").innerHTML=`<span class="cip tesis">${esc(s.f.grup)}</span><span class="cip">${esc(KONTROL[s.f.kontrol])}</span><span class="cip">${esc(TURLER.find(t=>t[0]===s.tur)[1])}</span>`;
+  $("soru").innerHTML=s.metin;
+  $("secenekler").innerHTML=s.secenekler.map((o,i)=>`<button class="secenek${s.metinli?" metinli":""}" id="sec-${i}" data-i="${i}"><span class="harf">${"ABCD"[i]}</span><span class="deg">${esc(o)}</span></button>`).join("");
+  document.querySelectorAll(".secenek").forEach(b=>b.addEventListener("click",()=>cevapla(+b.dataset.i)));
+  $("donut").hidden=true; $("sonraki").disabled=true;
+  $("sonraki").textContent=OT.i+1===n?"Sonucu göster":"Sonraki";
+}
+function cevapla(i){
+  const s=OT.sorular[OT.i]; if(OT.cevaplar[OT.i]!==undefined) return;
+  const ok=i===s.dogru; OT.cevaplar[OT.i]=i; if(ok) OT.dogru++;
+  document.querySelectorAll(".secenek").forEach((b,j)=>{ b.disabled=true; if(j===s.dogru) b.classList.add("dogru"); else if(j===i) b.classList.add("yanlis"); });
+  const f=s.f;
+  $("donut").innerHTML=`<div class="durum ${ok?"d":"y"}">${ok?"Doğru":"Yanlış"}</div>
+    <dl class="kaynak">
+      <dt>Tolerans</dt><dd><b>${esc(cevap(f))}</b></dd>
+      ${s.ekBilgi?`<dt>Hesap</dt><dd>${esc(s.ekBilgi)}</dd>`:""}
+      <dt>Parametre</dt><dd>${esc(etiketi(f))}</dd>
+      <dt>Kaynak</dt><dd>8200.1D · Tablo ${esc(f.tablo)} · Paragraf ${esc(f.ref)} · ${esc(KONTROL[f.kontrol])}${f.baglam?" · "+esc(f.baglam):""}</dd>
+      <dt>FAA metni</dt><dd class="en">${esc(f.en)}</dd>
+    </dl>`;
+  $("donut").hidden=false; $("puan").textContent=`${OT.dogru} doğru`;
+  $("sonraki").disabled=false; $("sonraki").focus();
+}
+function sonraki(){ if(OT.cevaplar[OT.i]===undefined) return; OT.i++; if(OT.i>=OT.sorular.length) sonuc(); else soruGoster(); }
+function sonuc(){
+  OT.bitti=true;
+  const cevaplanan=OT.cevaplar.filter(x=>x!==undefined).length;
+  const oran=cevaplanan?Math.round(OT.dogru/cevaplanan*100):0;
+  $("s-oran").textContent="%"+oran;
+  $("s-ozet").textContent=`${cevaplanan} sorudan ${OT.dogru} doğru · Oturum ${OT.tohum}`;
+  const gr={};
+  OT.sorular.forEach((s,i)=>{ if(OT.cevaplar[i]===undefined) return; const g=gr[s.f.grup]||(gr[s.f.grup]=[0,0]); g[1]++; if(OT.cevaplar[i]===s.dogru) g[0]++; });
+  $("s-grup").innerHTML=Object.entries(gr).map(([g,[d,t]])=>`<tr><td>${esc(g)}</td><td class="mono">${d} / ${t}</td><td><div class="cubuk"><i style="width:${d/t*100}%"></i></div></td></tr>`).join("");
+  const yanlis=OT.sorular.filter((s,i)=>OT.cevaplar[i]!==undefined&&OT.cevaplar[i]!==s.dogru);
+  $("s-yanlis").innerHTML=yanlis.length?`<h2>Yanlış cevaplananlar</h2><ul class="yanlis-liste">${yanlis.map(s=>`<li>${esc(etiketi(s.f))}<br><b>${esc(cevap(s.f))}</b> <span class="not">· Tablo ${esc(s.f.tablo)} · Paragraf ${esc(s.f.ref)} · ${esc(KONTROL[s.f.kontrol])}</span></li>`).join("")}</ul>`:`<p>Tüm sorular doğru.</p>`;
+  $("tekrar").disabled=!yanlis.length; OT.yanlislar=yanlis.map(s=>s.f);
+  goster("sonuc");
+}
+function veriYaz(){
+  const q=$("ara").value.trim().toLocaleLowerCase("tr");
+  const l=VERI.filter(f=>!q||[f.tesis,f.parametre,f.kosul,f.ref,f.tablo,cevap(f),f.en,f.baglam].join(" ").toLocaleLowerCase("tr").includes(q));
+  $("v-say").textContent=l.length+" / "+VERI.length+" satır";
+  $("v-govde").innerHTML=l.map(f=>`<tr><td>${esc(f.tesis)}${f.baglam?"<br><span class=\"not\">Böl. 24</span>":""}</td><td>${esc(f.parametre)}${f.kosul?" <span class=\"not\">("+esc(f.kosul)+")</span>":""}</td><td class="mono">${esc(cevap(f))}</td><td class="mono">${f.kontrol||"—"}</td><td class="mono">${esc(f.tablo)}</td><td class="mono">${esc(f.ref)}</td></tr>`).join("");
+}
+
+$("basla").addEventListener("click",()=>baslat());
+$("sonraki").addEventListener("click",sonraki);
+$("bitir").addEventListener("click",sonuc);
+$("yeni").addEventListener("click",()=>{ OT=null; $("tohum").value=Math.floor(Math.random()*900000)+100000; goster("ayar"); });
+$("tekrar").addEventListener("click",()=>baslat(OT.yanlislar));
+$("ara").addEventListener("input",veriYaz);
+document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>goster(b.dataset.g==="veri"?"veri":(!OT?"ayar":OT.bitti?"sonuc":"soru"))));
+document.addEventListener("keydown",e=>{
+  if($("g-soru").hidden || e.target.tagName==="INPUT") return;
+  const k=e.key.toUpperCase(); const m={"1":0,"2":1,"3":2,"4":3,"A":0,"B":1,"C":2,"D":3};
+  if(k in m && OT.cevaplar[OT.i]===undefined){ const s=OT.sorular[OT.i]; if(m[k]<s.secenekler.length) cevapla(m[k]); }
+  else if(e.key==="Enter" && !$("sonraki").disabled){ e.preventDefault(); sonraki(); }
+});
+kur();
+</script>
+
+<script>
+if("serviceWorker" in navigator){ window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{})); }
+</script>
+</body>
+</html>
