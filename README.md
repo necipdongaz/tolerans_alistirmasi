@@ -1,0 +1,1 @@
+# tolerans_alistirmasi
