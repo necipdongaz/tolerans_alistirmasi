@@ -510,7 +510,7 @@
   "baglam": ""
  },
  {
-  "tesis": "Gözetim radarı",
+  "tesis": "Gözetim radarı/ASR",
   "tablo": "14.10",
   "ref": "14.5.d",
   "kontrol": "CP",
@@ -525,7 +525,7 @@
   "baglam": ""
  },
  {
-  "tesis": "Gözetim radarı",
+  "tesis": "Gözetim radarı/ASR",
   "tablo": "14.10",
   "ref": "14.5.n",
   "kontrol": "CP",
@@ -540,7 +540,7 @@
   "baglam": ""
  },
  {
-  "tesis": "Gözetim radarı",
+  "tesis": "Gözetim radarı/ASR",
   "tablo": "14.10",
   "ref": "14.5.j",
   "kontrol": "CP",
@@ -561,7 +561,7 @@
   "baglam": ""
  },
  {
-  "tesis": "Gözetim radarı (ATCRBS)",
+  "tesis": "Gözetim radarı/ASR (ATCRBS)",
   "tablo": "14.10",
   "ref": "14.5.j",
   "kontrol": "CP",
@@ -582,7 +582,7 @@
   "baglam": ""
  },
  {
-  "tesis": "Gözetim radarı (ASR)",
+  "tesis": "Gözetim radarı/ASR",
   "tablo": "14.10",
   "ref": "14.5.k",
   "kontrol": "CP",
@@ -597,7 +597,7 @@
   "baglam": ""
  },
  {
-  "tesis": "Gözetim radarı (ASR)",
+  "tesis": "Gözetim radarı/ASR",
   "tablo": "14.10",
   "ref": "14.5.k",
   "kontrol": "CP",
@@ -618,7 +618,7 @@
   "baglam": ""
  },
  {
-  "tesis": "Gözetim radarı",
+  "tesis": "Gözetim radarı/ASR",
   "tablo": "14.10",
   "ref": "14.5.j",
   "kontrol": "CP",
@@ -633,7 +633,7 @@
   "baglam": ""
  },
  {
-  "tesis": "Gözetim radarı (ATCRBS)",
+  "tesis": "Gözetim radarı/ASR (ATCRBS)",
   "tablo": "14.10",
   "ref": "14.5.j",
   "kontrol": "CP",
@@ -648,7 +648,7 @@
   "baglam": ""
  },
  {
-  "tesis": "Gözetim radarı",
+  "tesis": "Gözetim radarı/ASR",
   "tablo": "14.10",
   "ref": "14.5",
   "kontrol": "CP",

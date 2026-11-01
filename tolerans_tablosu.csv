@@ -33,15 +33,15 @@
 32;NDB;;NDB yaklaşması: son yaklaşma kesiti ve bekleme paterninde kerteriz göstergesi sapması;toplam 10°;pm;5;;;°;;CP;12.6.d;12.6.d;10° (±5°)
 33;NDB;;Kısa süreli tolerans dışı ibre hareketi: yaklaşmada azami süre (130 kt);;max;4;;;s;;CP;12.6.e;12.6.e;four seconds on an approach
 34;NDB;;Kısa süreli tolerans dışı ibre hareketi: en route ve bekleme paterninde azami süre;;max;8;;;s;;CP;12.6.e;12.6.e;eight seconds en route/holding
-35;Gözetim radarı;;Oryantasyon (gerçek ve gösterilen azimut arasındaki azami fark);;pm;2;;;°;;CP;14.10;14.5.d;Orientation ±2°
-36;Gözetim radarı;;İrtifa okuması (kokpitte gösterilen irtifaya göre, 29,92 inHg);;pm;125;;;ft;;CP;14.10;14.5.n;Altitude Readout ±125 ft
-37;Gözetim radarı;;Radar fix/harita doğruluğu (birincil radar);;metin;;;;;Uçak–anten mesafesinin %3'ü veya 500 ft (hangisi büyükse);CP;14.10;14.5.j;Within 3% or 500 ft (1,000' ATCRBS), whichever is greater
-38;Gözetim radarı (ATCRBS);;Radar fix/harita doğruluğu (ATCRBS);;metin;;;;;Uçak–anten mesafesinin %3'ü veya 1.000 ft (hangisi büyükse);CP;14.10;14.5.j;1,000' for ATCRBS
-39;Gözetim radarı (ASR);;ASR düz yaklaşma: MAP'te pist kenarına uzaklık;;max;500;;;ft;;CP;14.10;14.5.k;Within 500 ft of runway edge at MAP
-40;Gözetim radarı (ASR);;ASR çember (circling) yaklaşma: MAP çevresindeki yarıçap;;metin;;;;;Uçak–anten mesafesinin %3'ü veya 500 ft (hangisi büyükse);CP;14.10;14.5.k;ASR Circling Approach
-41;Gözetim radarı;;%3 kuralının 500 ft'i aştığı uçak–anten mesafesi;;min;2.74;;;NM;;CP;14.10;14.5.j;3% exceeds 500 ft beyond 2.74 nm (16,667 ft)
-42;Gözetim radarı (ATCRBS);;%3 kuralının 1.000 ft'i aştığı uçak–anten mesafesi (ATCRBS);;min;5.49;;;NM;;CP;14.10;14.5.j;5.49 nm (33,333 ft)
-43;Gözetim radarı;;Kullanılabilir hedef: art arda kaçırılmaması gereken tarama sayısı (bu sayıda art arda kayıp/kullanılamaz olmamalı);;esit;3;;;tarama;;CP;14.10;14.5;not missed/unusable on three or more consecutive scans
+35;Gözetim radarı/ASR;;Oryantasyon (gerçek ve gösterilen azimut arasındaki azami fark);;pm;2;;;°;;CP;14.10;14.5.d;Orientation ±2°
+36;Gözetim radarı/ASR;;İrtifa okuması (kokpitte gösterilen irtifaya göre, 29,92 inHg);;pm;125;;;ft;;CP;14.10;14.5.n;Altitude Readout ±125 ft
+37;Gözetim radarı/ASR;;Radar fix/harita doğruluğu (birincil radar);;metin;;;;;Uçak–anten mesafesinin %3'ü veya 500 ft (hangisi büyükse);CP;14.10;14.5.j;Within 3% or 500 ft (1,000' ATCRBS), whichever is greater
+38;Gözetim radarı/ASR (ATCRBS);;Radar fix/harita doğruluğu (ATCRBS);;metin;;;;;Uçak–anten mesafesinin %3'ü veya 1.000 ft (hangisi büyükse);CP;14.10;14.5.j;1,000' for ATCRBS
+39;Gözetim radarı/ASR;;ASR düz yaklaşma: MAP'te pist kenarına uzaklık;;max;500;;;ft;;CP;14.10;14.5.k;Within 500 ft of runway edge at MAP
+40;Gözetim radarı/ASR;;ASR çember (circling) yaklaşma: MAP çevresindeki yarıçap;;metin;;;;;Uçak–anten mesafesinin %3'ü veya 500 ft (hangisi büyükse);CP;14.10;14.5.k;ASR Circling Approach
+41;Gözetim radarı/ASR;;%3 kuralının 500 ft'i aştığı uçak–anten mesafesi;;min;2.74;;;NM;;CP;14.10;14.5.j;3% exceeds 500 ft beyond 2.74 nm (16,667 ft)
+42;Gözetim radarı/ASR (ATCRBS);;%3 kuralının 1.000 ft'i aştığı uçak–anten mesafesi (ATCRBS);;min;5.49;;;NM;;CP;14.10;14.5.j;5.49 nm (33,333 ft)
+43;Gözetim radarı/ASR;;Kullanılabilir hedef: art arda kaçırılmaması gereken tarama sayısı (bu sayıda art arda kayıp/kullanılamaz olmamalı);;esit;3;;;tarama;;CP;14.10;14.5;not missed/unusable on three or more consecutive scans
 44;PAR;;Azimut course hizalaması (eşikte);pist merkez hattına göre;max;30;;;ft;;CP;14.19;14.17.a;30 ft referenced to runway centerline
 45;PAR;;Azimut course hizalaması (iz boyunca);;metin;;;;;30 ft veya pist merkez hattından 0,34° (hangisi büyükse);CP;14.19;14.17.a;Greater of 30 ft or 0.34°
 46;PAR;;0,34°'nin 30 ft'i aştığı uçak–PAR mesafesi;;min;0.83;;;NM;;CP;14.19;14.17.a;0.83 nm (5,055 ft)

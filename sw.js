@@ -1,5 +1,5 @@
 // Tolerans Alıştırması: internetsiz çalışma katmanı. Sürüm, index.html değiştikçe değişir.
-const SURUM = "tolerans-b352f5f7b0";
+const SURUM = "tolerans-a836be8ab6";
 const DOSYALAR = ["./","index.html","manifest.webmanifest","ikon-192.png","ikon-512.png","ikon-maskable-512.png","apple-touch-icon.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(SURUM).then(c => c.addAll(DOSYALAR)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(k => Promise.all(k.filter(x => x !== SURUM).map(x => caches.delete(x)))).then(() => self.clients.claim())); });
