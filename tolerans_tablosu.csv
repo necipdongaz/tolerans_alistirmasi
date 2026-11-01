@@ -1,9 +1,9 @@
 ﻿id;tesis;baglam;parametre;kosul;tip;deger;alt;ust;birim;metin;kontrol;tablo;paragraf;faa_metni
 1;TACAN;;Mesafe doğruluğu;;max;0.2;;;NM;;CP;11.21.b;11.9;Distance Accuracy
-2;TACAN;;Polarizasyon (yatay polarizasyonun yol açtığı kurs sapması);;pm;2.0;;;°;;CP;11.21.b;11.5.e;Polarization
+2;TACAN;;Polarizasyon (yatay polarizasyonun yol açtığı course sapması);;pm;2.0;;;°;;CP;11.21.b;11.5.e;Polarization
 3;TACAN;;Yaklaşma radyali hizalaması;doğru manyetik azimuta göre;pm;2.0;;;°;;CP;11.21.b;11.4.a;Alignment of approach radials
 4;TACAN;;Elektronik radyal hizalaması (en route);doğru manyetik azimuta göre;pm;2.5;;;°;;CP;11.21.b;11.4.a;Alignment of all electronic radials
-5;TACAN;;Bükülmelerden kaynaklanan kurs sapması (bends);doğru manyetik azimuttan ve ortalama elektronik radyalden;max;3.5;;;°;;CP;11.21.b;11.6;Bends
+5;TACAN;;Bükülmelerden kaynaklanan course sapması (bends);doğru manyetik azimuttan ve ortalama elektronik radyalden;max;3.5;;;°;;CP;11.21.b;11.6;Bends
 6;TACAN;;Yapı: kabul edilen sapmaların başladığı eşik (roughness/scalloping);bu değerden büyük sapmalar, toplam alan sınırı aşılmazsa kabul edilir;min;3.0;;;°;;CP;11.21.b;11.6;Deviations greater than 3.0° acceptable provided aggregate...
 7;TACAN;;Yapı toplam alanı: FAF–MAP arası, herhangi 1,0 NM'lik kesitte;;max;0.05;;;NM;;CP;11.21.b;11.6;0.05 nm in any 1.0 nm segment FAF to MAP
 8;TACAN;;Yapı toplam alanı: deniz seviyesi–10.000 ft MSL, herhangi 5 NM'lik kesitte;;max;0.25;;;NM;;CP;11.21.b;11.6;0.25 nm in any 5 nm segment
@@ -16,7 +16,7 @@
 15;TACAN;;Alıcı kontrol noktası azimut hizalaması;yayımlanan azimuta göre;pm;1.5;;;°;;CP;11.21.b;11.4.h;Receiver Checkpoints
 16;TACAN;;Alıcı kontrol noktası mesafesi;ölçülen mesafeye göre;max;0.2;;;NM;;CP;11.21.b;11.4.h;Receiver Checkpoints distance
 17;TACAN;;Verici azimut monitör referansı;;pm;1.0;;;°;;;11.21.b;11.4.b;Monitor
-18;TACAN;;Yedek ekipman: iki vericinin kurs hizalama farkı;;pm;1.5;;;°;;CP;11.21.b;11.4.i;Standby Equipment alignment difference
+18;TACAN;;Yedek ekipman: iki vericinin course hizalama farkı;;pm;1.5;;;°;;CP;11.21.b;11.4.i;Standby Equipment alignment difference
 19;TACAN;;Yedek ekipman: iki verici arası mesafe farkı;;max;0.2;;;NM;;CP;11.21.b;11.4.i;Distance differential between transmitters
 20;TACAN;;Orbital hizalama (aşılırsa bakım bilgilendirilir);referansa göre;pm;1;;;°;;P;11.21.b;11.4.f;Orbital Alignment
 21;DME;;Mesafe doğruluğu;;max;0.2;;;NM;;CP;11.21.c;11.10;Distance Accuracy
@@ -42,8 +42,8 @@
 41;Gözetim radarı;;%3 kuralının 500 ft'i aştığı uçak–anten mesafesi;;min;2.74;;;NM;;CP;14.10;14.5.j;3% exceeds 500 ft beyond 2.74 nm (16,667 ft)
 42;Gözetim radarı (ATCRBS);;%3 kuralının 1.000 ft'i aştığı uçak–anten mesafesi (ATCRBS);;min;5.49;;;NM;;CP;14.10;14.5.j;5.49 nm (33,333 ft)
 43;Gözetim radarı;;Kullanılabilir hedef: art arda kaçırılmaması gereken tarama sayısı (bu sayıda art arda kayıp/kullanılamaz olmamalı);;esit;3;;;tarama;;CP;14.10;14.5;not missed/unusable on three or more consecutive scans
-44;PAR;;Azimut kurs hizalaması (eşikte);pist merkez hattına göre;max;30;;;ft;;CP;14.19;14.17.a;30 ft referenced to runway centerline
-45;PAR;;Azimut kurs hizalaması (iz boyunca);;metin;;;;;30 ft veya pist merkez hattından 0,34° (hangisi büyükse);CP;14.19;14.17.a;Greater of 30 ft or 0.34°
+44;PAR;;Azimut course hizalaması (eşikte);pist merkez hattına göre;max;30;;;ft;;CP;14.19;14.17.a;30 ft referenced to runway centerline
+45;PAR;;Azimut course hizalaması (iz boyunca);;metin;;;;;30 ft veya pist merkez hattından 0,34° (hangisi büyükse);CP;14.19;14.17.a;Greater of 30 ft or 0.34°
 46;PAR;;0,34°'nin 30 ft'i aştığı uçak–PAR mesafesi;;min;0.83;;;NM;;CP;14.19;14.17.a;0.83 nm (5,055 ft)
 47;PAR;;Menzil doğruluğu (gerçek menzile göre);;pm;2;;;%;;CP;14.19;14.17.d;Range Accuracy ±2% of true range
 48;PAR;;Azimut ve yükselişte kullanılabilir mesafe (teker koyma noktasına);;min;7.5;;;NM;;CP;14.19;14.17.e;Minimum of 7.5 nm to touchdown
@@ -53,38 +53,38 @@
 52;PAR;;Çakışma (PAR açısının yayımlanan ILS/GLS/LPV/VGSI açısıyla farkı);;pm;0.2;;;°;;CP;14.19;14.17.j;Coincidence ±0.2°
 53;ILS Localizer;;Modülasyon seviyesi (15.4.b'ye göre ölçülen);;aralik;;36;44;%;;CP;15.9.a;15.4.b;Modulation Level 36–44%
 54;ILS Localizer;;Hizmet hacmi boyunca modülasyon (01/01/2000 sonrası yeni tip anten);;aralik;;30;60;%;;CP;15.9.a;15.4.b;30%–60% throughout the service volume
-55;ILS Localizer;;Güç oranı: kurs vericisinin klirens vericisinden asgari fazlası (çift frekans);;min;10;;;dB;;C;15.9.a;15.4.d;Power Ratio at least 10 dB
-56;ILS Localizer;;Ön kurs genişliği: azami değer (LOC);;max;6.0;;;°;;;15.9.a;15.4.f;Width maximum 6.0°
-57;ILS Localizer;;Hassas yaklaşma: eşikte asgari kurs genişliği;;min;400;;;ft;;;15.9.a;15.4.f;400 ft minimum course width at threshold
-58;ILS Localizer;;CAT II ve III: eşikte uyarlanmış (tailored) kurs genişliği;;esit;700;;;ft;;;15.9.a;15.4.f;CAT II & III tailored to 700 ft
-59;ILS Localizer;;Ön kurs genişliği (hizmete alınmış genişliğe göre);;pm;0.1;;;°;;C;15.9.a;15.4.f;±0.1° of the commissioned width
-60;ILS Localizer;;Ön kurs genişliği (hizmete alınmış genişliğe göre);;pm;17;;;%;;P;15.9.a;15.4.f;Within 17% of the commissioned width
-61;ILS Localizer;;Verici farkı (ön kurs): iki vericinin normal genişlik farkı;;metin;;;;;0,5° veya hizmete alınmış genişliğin %10'u (hangisi küçükse);P;15.9.a;15.4.f;0.5° or 10%, whichever is least
-62;ILS Localizer;;Arka kurs genişliği;;aralik;;3.0;6.0;°;;C;15.9.a;15.4.f;Back Course between 3.0° and 6.0°
-63;ILS Localizer;;Arka kurs genişliği (normal veya monitör alarm durumunda);;aralik;;2.49;7.02;°;;P;15.9.a;15.4.f;Between 2.49° and 7.02°
-64;ILS Localizer;;Simetri (yalnız ön kurs, tesis normalde);;aralik;;45;55;%;;CP;15.9.a;15.4.f;Symmetry 45–55%
-65;ILS Localizer;;Hizalama: ön kurs ve bağımsız izlenen arka kurs;tasarlanan prosedürel azimuttan;pm;3;;;µA;;C;15.9.a;15.4.g;Within ±3 µA
-66;ILS Localizer;;Hizalama: bağımsız izlenen arka kurs;;pm;10;;;µA;;C;15.9.a;15.4.g;±10 µA independently monitored back courses
+55;ILS Localizer;;Güç oranı: course vericisinin klirens vericisinden asgari fazlası (çift frekans);;min;10;;;dB;;C;15.9.a;15.4.d;Power Ratio at least 10 dB
+56;ILS Localizer;;Ön course genişliği: azami değer (LOC);;max;6.0;;;°;;;15.9.a;15.4.f;Width maximum 6.0°
+57;ILS Localizer;;Hassas yaklaşma: eşikte asgari course genişliği;;min;400;;;ft;;;15.9.a;15.4.f;400 ft minimum course width at threshold
+58;ILS Localizer;;CAT II ve III: eşikte uyarlanmış (tailored) course genişliği;;esit;700;;;ft;;;15.9.a;15.4.f;CAT II & III tailored to 700 ft
+59;ILS Localizer;;Ön course genişliği (hizmete alınmış genişliğe göre);;pm;0.1;;;°;;C;15.9.a;15.4.f;±0.1° of the commissioned width
+60;ILS Localizer;;Ön course genişliği (hizmete alınmış genişliğe göre);;pm;17;;;%;;P;15.9.a;15.4.f;Within 17% of the commissioned width
+61;ILS Localizer;;Verici farkı (ön course): iki vericinin normal genişlik farkı;;metin;;;;;0,5° veya hizmete alınmış genişliğin %10'u (hangisi küçükse);P;15.9.a;15.4.f;0.5° or 10%, whichever is least
+62;ILS Localizer;;Arka course genişliği;;aralik;;3.0;6.0;°;;C;15.9.a;15.4.f;Back Course between 3.0° and 6.0°
+63;ILS Localizer;;Arka course genişliği (normal veya monitör alarm durumunda);;aralik;;2.49;7.02;°;;P;15.9.a;15.4.f;Between 2.49° and 7.02°
+64;ILS Localizer;;Simetri (yalnız ön course, tesis normalde);;aralik;;45;55;%;;CP;15.9.a;15.4.f;Symmetry 45–55%
+65;ILS Localizer;;Hizalama: ön course ve bağımsız izlenen arka course;tasarlanan prosedürel azimuttan;pm;3;;;µA;;C;15.9.a;15.4.g;Within ±3 µA
+66;ILS Localizer;;Hizalama: bağımsız izlenen arka course;;pm;10;;;µA;;C;15.9.a;15.4.g;±10 µA independently monitored back courses
 67;ILS Localizer;;Hizalama: CAT I;tasarlanan prosedürel azimuttan;pm;15;;;µA;;P;15.9.a;15.4.g;CAT I ±15 µA
 68;ILS Localizer;;Hizalama: CAT II;tasarlanan prosedürel azimuttan;pm;11;;;µA;;P;15.9.a;15.4.g;CAT II ±11 µA
 69;ILS Localizer;;Hizalama: CAT III;tasarlanan prosedürel azimuttan;pm;9;;;µA;;P;15.9.a;15.4.g;CAT III ±9 µA
-70;ILS Localizer;;Hizalama: arka kurs;;pm;20;;;µA;;P;15.9.a;15.4.g;Back Course ±20 µA
+70;ILS Localizer;;Hizalama: arka course;;pm;20;;;µA;;P;15.9.a;15.4.g;Back Course ±20 µA
 71;ILS Localizer;;Monitör kontrolü sonrası referans verici hizalaması (düz yaklaşma);;max;3;;;µA;;P;15.9.a;15.4.g;reference transmitter ≤3 µA
-72;ILS Localizer;;Hizalama: ön kursa bağlı arka kurs;tasarlanan prosedürel azimuttan;pm;65;;;µA;;CP;15.9.a;15.4.g;Designed procedural azimuth ±65 µA
-73;ILS Localizer;;Kurs yapısı Bölge 1 (CAT I/II/III, A noktasına kadar);grafik ortalama kurstan;pm;30;;;µA;;CP;15.9.a;15.4.g;Zone 1 ±30 µA to Point A
-74;ILS Localizer;;Kurs yapısı Bölge 2, CAT I: B noktasındaki değer (A'da ±30'dan doğrusal azalarak);;pm;15;;;µA;;CP;15.9.a;15.4.g;CAT I ±30 at A to ±15 at B
-75;ILS Localizer;;Kurs yapısı Bölge 2, CAT II/III: B noktasındaki değer (A'da ±30'dan doğrusal azalarak);;pm;5;;;µA;;CP;15.9.a;15.4.g;CAT II, III ±30 at A to ±5 at B
-76;ILS Localizer;;Kurs yapısı Bölge 3, CAT I (B'den C noktasına);;pm;15;;;µA;;CP;15.9.a;15.4.g;Zone 3 CAT I ±15 µA
-77;ILS Localizer;;Kurs yapısı Bölge 3 ve 4, CAT II/III (B'den D noktasına);;pm;5;;;µA;;CP;15.9.a;15.4.g;Zones 3&4 CAT II, III ±5 µA
-78;ILS Localizer;;Kurs yapısı Bölge 5, CAT III: E noktasındaki değer (D'de ±5'ten doğrusal artarak);;pm;10;;;µA;;CP;15.9.a;15.4.g;Zone 5 CAT III ±5 at D to ±10 at E
-79;ILS Localizer;;Arka kurs yapısı Bölge 1 (A noktasına kadar);grafik ortalama kurstan;pm;40;;;µA;;CP;15.9.a;15.4.g;Back Course Zone 1 ±40 µA
-80;ILS Localizer;;Arka kurs yapısı Bölge 3 (B'den C noktasına);;pm;20;;;µA;;CP;15.9.a;15.4.g;Back Course Zone 3 ±20 µA
+72;ILS Localizer;;Hizalama: ön course'a bağlı arka course;tasarlanan prosedürel azimuttan;pm;65;;;µA;;CP;15.9.a;15.4.g;Designed procedural azimuth ±65 µA
+73;ILS Localizer;;Course yapısı Bölge 1 (CAT I/II/III, A noktasına kadar);grafik ortalama course'tan;pm;30;;;µA;;CP;15.9.a;15.4.g;Zone 1 ±30 µA to Point A
+74;ILS Localizer;;Course yapısı Bölge 2, CAT I: B noktasındaki değer (A'da ±30'dan doğrusal azalarak);;pm;15;;;µA;;CP;15.9.a;15.4.g;CAT I ±30 at A to ±15 at B
+75;ILS Localizer;;Course yapısı Bölge 2, CAT II/III: B noktasındaki değer (A'da ±30'dan doğrusal azalarak);;pm;5;;;µA;;CP;15.9.a;15.4.g;CAT II, III ±30 at A to ±5 at B
+76;ILS Localizer;;Course yapısı Bölge 3, CAT I (B'den C noktasına);;pm;15;;;µA;;CP;15.9.a;15.4.g;Zone 3 CAT I ±15 µA
+77;ILS Localizer;;Course yapısı Bölge 3 ve 4, CAT II/III (B'den D noktasına);;pm;5;;;µA;;CP;15.9.a;15.4.g;Zones 3&4 CAT II, III ±5 µA
+78;ILS Localizer;;Course yapısı Bölge 5, CAT III: E noktasındaki değer (D'de ±5'ten doğrusal artarak);;pm;10;;;µA;;CP;15.9.a;15.4.g;Zone 5 CAT III ±5 at D to ±10 at E
+79;ILS Localizer;;Arka course yapısı Bölge 1 (A noktasına kadar);grafik ortalama course'tan;pm;40;;;µA;;CP;15.9.a;15.4.g;Back Course Zone 1 ±40 µA
+80;ILS Localizer;;Arka course yapısı Bölge 3 (B'den C noktasına);;pm;20;;;µA;;CP;15.9.a;15.4.g;Back Course Zone 3 ±20 µA
 81;ILS Localizer;;Yapı istisnası: 7.089 ft'lik kesitte kabul edilebilir toplam tolerans dışı uzunluk;;max;354;;;ft;;CP;15.9.a;15.8.a;354 ft in a 7,089-foot segment
 82;ILS Localizer;;Hizalama monitörü alarm sınırı: CAT I;;pm;15;;;µA;;CP;15.9.a;15.4.i;Monitor CAT I ±15 µA
 83;ILS Localizer;;Hizalama monitörü alarm sınırı: CAT II;;pm;11;;;µA;;CP;15.9.a;15.4.i;CAT II ±11 µA
 84;ILS Localizer;;Hizalama monitörü alarm sınırı: CAT III;;pm;9;;;µA;;CP;15.9.a;15.4.i;CAT III ±9 µA
-85;ILS Localizer;;Genişlik monitörü: ön kurs ve bağımsız izlenen arka kurs (hizmete alınmış genişliğe göre);;pm;17;;;%;;CP;15.9.a;15.4.i;Not more than ±17%
-86;ILS Localizer;;Genişlik monitörü: arka kurs;;aralik;;2.49;7.02;°;;CP;15.9.a;15.4.i;Back Course 2.49–7.02°
+85;ILS Localizer;;Genişlik monitörü: ön course ve bağımsız izlenen arka course (hizmete alınmış genişliğe göre);;pm;17;;;%;;CP;15.9.a;15.4.i;Not more than ±17%
+86;ILS Localizer;;Genişlik monitörü: arka course;;aralik;;2.49;7.02;°;;CP;15.9.a;15.4.i;Back Course 2.49–7.02°
 87;ILS Localizer;;RF güç (azaltılmış güçte) asgari sinyal şiddeti;;min;5;;;µV;;C;15.9.a;15.4.j;RF Power signal strength 5 µV
 88;ILS Localizer;;Kapsama: asgari sinyal şiddeti;;min;5;;;µV;;CP;15.9.a;15.4.j;Coverage signal strength 5 µV
 89;ILS Localizer;;Klirens Sektör 1: doğrusal artışla ulaşılacak ve 10°'ye kadar korunacak değer (normal);;min;175;;;µA;;CP;15.9.a;15.4.k;Linear increase to 175 µA then maintain to 10°
@@ -95,7 +95,7 @@
 94;ILS Localizer;;Polarizasyon hatası: CAT I;;pm;15;;;µA;;CP;15.9.a;15.4.n;CAT I ±15 µA
 95;ILS Localizer;;Polarizasyon hatası: CAT II;;pm;8;;;µA;;CP;15.9.a;15.4.n;CAT II ±8 µA
 96;ILS Localizer;;Polarizasyon hatası: CAT III;;pm;5;;;µA;;CP;15.9.a;15.4.n;CAT III ±5 µA
-97;ILS Localizer;;Ses modülasyonunun yol açabileceği azami kurs bozulması;;max;5;;;µA;;CP;15.9.a;15.4.o;Voice modulation not more than 5 µA
+97;ILS Localizer;;Ses modülasyonunun yol açabileceği azami course bozulması;;max;5;;;µA;;CP;15.9.a;15.4.o;Voice modulation not more than 5 µA
 98;ILS Glide slope;;Modülasyon seviyesi;;aralik;;78;82;%;;C;15.9.b;15.5.b;78–82%
 99;ILS Glide slope;;Modülasyon seviyesi;;aralik;;75;85;%;;P;15.9.b;15.5.b;75–85%
 100;ILS Glide slope;;Modülasyon eşitliği (sıfır µA etrafında);;pm;5;;;µA;;;15.9.b;15.5.c;Zero µA ±5 µA
